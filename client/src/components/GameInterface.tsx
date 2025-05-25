@@ -30,10 +30,13 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   const isInFeedbackMode = useRef(false);
   const goButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Fetch questions for current game - using direct values since state sync is broken
+  // Fetch questions for current game - add fallback for when state sync is broken
+  const modeToUse = gameState.selectedMode || 'capitals'; // Default to capitals mode
+  const regionToUse = gameState.selectedRegion || 'global'; // Default to global region
+  
   const { data: questions, isLoading, error } = useQuery({
-    queryKey: [`/api/questions/mispronounced-capitals/global`],
-    enabled: true // Always enable for now to test
+    queryKey: [`/api/questions/${modeToUse}/${regionToUse}`],
+    enabled: true // Always enable since we have fallbacks
   });
 
   console.log('Game state:', gameState);
@@ -153,7 +156,18 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     }
   };
 
-  // No global handler needed - input field handles both states
+  // Global Enter key handler for feedback screen
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && showFeedback && lastAnswer) {
+        e.preventDefault();
+        handleContinue();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showFeedback, lastAnswer]);
 
   const handleSkipQuestion = () => {
     handleSubmitAnswer(); // Submit empty answer
