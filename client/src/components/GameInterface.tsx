@@ -115,7 +115,24 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     }
   }
 
+  // Add global keyboard listener for Enter-to-continue when feedback is shown
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && showFeedback) {
+        e.preventDefault();
+        e.stopPropagation();
+        handleContinue();
+      }
+    };
 
+    if (showFeedback) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showFeedback]);
 
   const handleSkipQuestion = () => {
     handleSubmitAnswer(); // Submit empty answer
