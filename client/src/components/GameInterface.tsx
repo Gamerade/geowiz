@@ -115,36 +115,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     }
   }
 
-  // Add global keyboard listener for Enter-to-continue when feedback is shown
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && showFeedback) {
-        e.preventDefault();
-        e.stopPropagation();
-        // Call continue logic directly here instead of through function
-        setShowFeedback(false);
-        setLastAnswer(null);
-        setUserAnswer('');
-        incrementQuestion();
-        
-        if (currentQuestionIndex >= (questions?.length || 0) - 1) {
-          completeGame();
-          onBackToMenu();
-        } else {
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
-          setCurrentQuestion(currentQuestionIndex + 1);
-        }
-      }
-    };
 
-    if (showFeedback) {
-      document.addEventListener('keydown', handleKeyDown);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [showFeedback, currentQuestionIndex, questions?.length]);
 
   const handleSkipQuestion = () => {
     handleSubmitAnswer(); // Submit empty answer
@@ -304,12 +275,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                   placeholder="Type answer..."
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !submitAnswerMutation.isPending && !showFeedback && userAnswer.trim()) {
-                      e.preventDefault();
-                      handleSubmitAnswer();
-                    }
-                  }}
+
                   className="text-6xl py-8 pr-32 font-bold leading-tight placeholder:text-lg placeholder:text-slate-400"
                   style={{ fontSize: '48px', lineHeight: '1.1' }}
                   disabled={submitAnswerMutation.isPending || showFeedback}
