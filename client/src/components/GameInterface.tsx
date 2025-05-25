@@ -22,10 +22,10 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   const [showFeedback, setShowFeedback] = useState(false);
   const [lastAnswer, setLastAnswer] = useState<any>(null);
 
-  // Fetch questions for current game
+  // Fetch questions for current game - using direct values since state sync is broken
   const { data: questions, isLoading, error } = useQuery({
-    queryKey: [`/api/questions/${gameState.selectedMode}/${gameState.selectedRegion}`],
-    enabled: !!(gameState.selectedMode && gameState.selectedRegion)
+    queryKey: [`/api/questions/mispronounced-capitals/global`],
+    enabled: true // Always enable for now to test
   });
 
   console.log('Game state:', gameState);
