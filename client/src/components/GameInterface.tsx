@@ -267,16 +267,16 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
               <div className="relative">
                 <Input
                   type="text"
-                  placeholder="Type your answer here..."
+                  placeholder="Type answer..."
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !submitAnswerMutation.isPending && !showFeedback && userAnswer.trim()) {
                       handleSubmitAnswer();
                     }
                   }}
-                  className="text-6xl py-8 pr-32 font-bold leading-tight"
-                  style={{ fontSize: '54px', lineHeight: '1.1' }}
+                  className="text-6xl py-8 pr-32 font-bold leading-tight placeholder:text-lg placeholder:text-slate-400"
+                  style={{ fontSize: '48px', lineHeight: '1.1' }}
                   disabled={submitAnswerMutation.isPending || showFeedback}
                 />
                 <Button
