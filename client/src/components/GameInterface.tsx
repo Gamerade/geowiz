@@ -263,7 +263,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
             </div>
 
             {/* Answer Input */}
-            <div className="max-w-md mx-auto">
+            <div className="max-w-2xl mx-auto">
               <div className="relative">
                 <Input
                   type="text"
@@ -275,19 +275,20 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                       handleSubmitAnswer();
                     }
                   }}
-                  className="text-lg py-4 pr-24"
+                  className="text-3xl py-8 pr-32 font-medium"
                   disabled={submitAnswerMutation.isPending || showFeedback}
                 />
                 <Button
                   onClick={handleSubmitAnswer}
                   disabled={!userAnswer.trim() || submitAnswerMutation.isPending || showFeedback}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-16 w-16 rounded-full"
+                  size="lg"
                 >
-                  {submitAnswerMutation.isPending ? "..." : "Submit"}
+                  {submitAnswerMutation.isPending ? "..." : "▶"}
                 </Button>
               </div>
               <div className="mt-4 text-center space-x-4">
-                <p className="text-sm text-slate-500">Press Enter or click Submit</p>
+                <p className="text-sm text-slate-500">Press Enter or click the play button</p>
                 <Button
                   variant="ghost"
                   size="sm"
