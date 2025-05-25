@@ -78,6 +78,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   const currentQuestion: Question | undefined = questions?.[currentQuestionIndex];
 
   const handleSubmitAnswer = () => {
+    console.log('handleSubmitAnswer called!');
     if (!currentQuestion || !userAnswer.trim() || submitAnswerMutation.isPending) return;
 
     // Simple answer checking for immediate gameplay
@@ -97,11 +98,13 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
 
     console.log('Setting feedback data:', mockAnswer);
     console.log('Current showFeedback before:', showFeedback);
+    console.log('Current hasSubmitted before:', hasSubmitted);
     
     setLastAnswer(mockAnswer);
     setShowFeedback(true);
+    setHasSubmitted(true); // ✅ Set this immediately for Enter key path
     
-    console.log('Should show feedback now');
+    console.log('Should show feedback now - hasSubmitted set to true');
     
     if (isCorrect) {
       updateScore(100);
@@ -320,11 +323,21 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
+                        console.log('Enter key pressed!');
+                        console.log('showFeedback:', showFeedback);
+                        console.log('lastAnswer:', lastAnswer);
+                        console.log('hasSubmitted:', hasSubmitted);
+                        console.log('userAnswer:', userAnswer);
+                        console.log('submitAnswerMutation.isPending:', submitAnswerMutation.isPending);
 
                         if (showFeedback && lastAnswer && hasSubmitted) {
+                          console.log('Enter: Calling handleContinue');
                           handleContinue();
                         } else if (!showFeedback && userAnswer.trim() && !submitAnswerMutation.isPending) {
+                          console.log('Enter: Calling handleSubmitAnswer');
                           handleSubmitAnswer(); // skip goButtonRef, call the real logic
+                        } else {
+                          console.log('Enter: No action taken - conditions not met');
                         }
                       }
                     }}
