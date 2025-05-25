@@ -84,8 +84,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
 
     const mockAnswer = {
       isCorrect,
-      correctAnswer: currentQuestion.answer,
-      funFact: currentQuestion.funFact,
+      question: currentQuestion, // Include the full question object
       scoreEarned: isCorrect ? 100 : 0,
       timeSpent: 60 - timeRemaining
     };
