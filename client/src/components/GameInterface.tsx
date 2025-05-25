@@ -380,7 +380,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                 <div className="text-6xl mb-3">📚</div>
                 <h2 className="text-3xl font-bold text-blue-600">Good Try!</h2>
                 <p className="text-lg text-slate-700 mt-1">
-                  The answer was: <span className="font-bold text-slate-900">{lastAnswer.question.answer}</span>
+                  The answer was: <span className="font-bold text-slate-900">{lastAnswer.question?.answer || 'Unknown'}</span>
                 </p>
               </div>
             )}
@@ -392,7 +392,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
               <Zap className="text-amber-500 mr-2 w-5 h-5" />
               Did you know?
             </h3>
-            <p className="text-base text-slate-700 leading-relaxed">{lastAnswer.funFact}</p>
+            <p className="text-base text-slate-700 leading-relaxed">{lastAnswer.question?.funFact || 'No fun fact available'}</p>
           </div>
 
           {/* Continue Instruction */}
