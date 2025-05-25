@@ -10,6 +10,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { X, Flag, Map, Mic, Clock, Trophy, Target, Zap, Percent } from "lucide-react";
 import { getRankTitle } from "@/lib/gameData";
 import type { Question } from "@shared/schema";
+import GameResults from "@/components/GameResults";
 
 interface GameInterfaceProps {
   onBackToMenu: () => void;
@@ -23,6 +24,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   const [showFeedback, setShowFeedback] = useState(false);
   const [lastAnswer, setLastAnswer] = useState<any>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [showResults, setShowResults] = useState(false);
   const isInFeedbackMode = useRef(false);
   const goButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -137,9 +139,9 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     incrementQuestion();
     
     if (currentQuestionIndex >= (questions?.length || 0) - 1) {
-      // Game complete
+      // Game complete - show results screen
       completeGame();
-      onBackToMenu();
+      setShowResults(true);
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setCurrentQuestion(currentQuestionIndex + 1);
@@ -150,6 +152,23 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
 
   const handleSkipQuestion = () => {
     handleSubmitAnswer(); // Submit empty answer
+  };
+
+  const handlePlayAgain = () => {
+    // Reset all game state and start over with same mode/region
+    setShowResults(false);
+    setCurrentQuestionIndex(0);
+    setCurrentQuestion(0);
+    setUserAnswer("");
+    setShowFeedback(false);
+    setLastAnswer(null);
+    setHasSubmitted(false);
+    setTimeRemaining(60);
+  };
+
+  const handleBackToMenu = () => {
+    setShowResults(false);
+    onBackToMenu();
   };
 
   const getQuestionIcon = (type: string | null) => {
