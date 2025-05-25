@@ -8,6 +8,7 @@ import { useGameState } from "@/hooks/useGameState";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { X, Flag, Map, Mic, Clock, Trophy, Target, Zap, Percent } from "lucide-react";
+import { getRankTitle } from "@/lib/gameData";
 import type { Question } from "@shared/schema";
 
 interface GameInterfaceProps {
@@ -110,7 +111,25 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setCurrentQuestion(currentQuestionIndex + 1);
     }
-  };
+  }
+
+  // Add global keyboard listener for Enter-to-continue when feedback is shown
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && showFeedback) {
+        e.preventDefault();
+        handleContinue();
+      }
+    };
+
+    if (showFeedback) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showFeedback]);;
 
   const handleSkipQuestion = () => {
     handleSubmitAnswer(); // Submit empty answer
@@ -345,22 +364,22 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
 
       {/* Inline Feedback - replaces question area when showing feedback */}
       {showFeedback && lastAnswer && (
-        <div className="max-w-4xl mx-auto text-center space-y-8">
+        <div className="max-w-4xl mx-auto text-center space-y-6">
           {/* Result Header */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             {lastAnswer.isCorrect ? (
               <div>
-                <div className="text-8xl mb-4">🎉</div>
-                <h2 className="text-4xl font-bold text-emerald-500">Excellent!</h2>
-                <p className="text-xl text-slate-700 mt-2">
-                  +{lastAnswer.scoreEarned} points! You're getting better!
+                <div className="text-6xl mb-3">🎉</div>
+                <h2 className="text-3xl font-bold text-emerald-500">Excellent!</h2>
+                <p className="text-lg text-slate-700 mt-1">
+                  +{lastAnswer.scoreEarned} points! You're {getRankTitle(gameState.score)}!
                 </p>
               </div>
             ) : (
               <div>
-                <div className="text-8xl mb-4">📚</div>
-                <h2 className="text-4xl font-bold text-blue-600">Good Try!</h2>
-                <p className="text-xl text-slate-700 mt-2">
+                <div className="text-6xl mb-3">📚</div>
+                <h2 className="text-3xl font-bold text-blue-600">Good Try!</h2>
+                <p className="text-lg text-slate-700 mt-1">
                   The answer was: <span className="font-bold text-slate-900">{lastAnswer.question.answer}</span>
                 </p>
               </div>
@@ -368,21 +387,21 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
           </div>
 
           {/* Fun Fact */}
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-blue-800 mb-4 flex items-center justify-center">
-              <Zap className="text-amber-500 mr-3 w-6 h-6" />
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 max-w-2xl mx-auto">
+            <h3 className="text-xl font-bold text-blue-800 mb-3 flex items-center justify-center">
+              <Zap className="text-amber-500 mr-2 w-5 h-5" />
               Did you know?
             </h3>
-            <p className="text-lg text-slate-700 leading-relaxed">{lastAnswer.funFact}</p>
+            <p className="text-base text-slate-700 leading-relaxed">{lastAnswer.funFact}</p>
           </div>
 
-          {/* Continue Button */}
-          <Button 
-            onClick={handleContinue} 
-            className="bg-emerald-600 hover:bg-emerald-700 text-white px-12 py-4 rounded-xl text-xl font-semibold"
-          >
-            {currentQuestionIndex >= questions.length - 1 ? "Complete Game" : "Continue Adventure"}
-          </Button>
+          {/* Continue Instruction */}
+          <div className="text-center">
+            <p className="text-lg text-slate-600 mb-4">Press Enter to continue to the next question</p>
+            <div className="animate-pulse">
+              <div className="w-16 h-1 bg-emerald-500 rounded mx-auto"></div>
+            </div>
+          </div>
         </div>
       )}
     </div>
