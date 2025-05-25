@@ -28,6 +28,10 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     enabled: !!(gameState.selectedMode && gameState.selectedRegion)
   });
 
+  console.log('Game state:', gameState);
+  console.log('Selected mode:', gameState.selectedMode);
+  console.log('Selected region:', gameState.selectedRegion);
+  console.log('Query enabled:', !!(gameState.selectedMode && gameState.selectedRegion));
   console.log('Questions data:', questions);
   console.log('Loading state:', isLoading);
   console.log('Error:', error);
