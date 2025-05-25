@@ -275,7 +275,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                       handleSubmitAnswer();
                     }
                   }}
-                  className="text-4xl py-8 pr-32 font-bold"
+                  className="text-6xl py-8 pr-32 font-bold"
                   disabled={submitAnswerMutation.isPending || showFeedback}
                 />
                 <Button
