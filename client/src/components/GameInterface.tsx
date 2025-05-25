@@ -300,13 +300,15 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
                   onKeyDown={(e) => {
-                    console.log('Key pressed:', e.key, 'userAnswer:', userAnswer, 'showFeedback:', showFeedback);
-                    if (e.key === 'Enter' && userAnswer.trim() && !showFeedback) {
-                      console.log('Enter key conditions met, calling handleSubmitAnswer');
+                    if (e.key === 'Enter') {
                       e.preventDefault();
-                      handleSubmitAnswer();
-                    } else if (e.key === 'Enter') {
-                      console.log('Enter key pressed but conditions not met');
+                      if (showFeedback && lastAnswer) {
+                        // Continue to next question if showing feedback
+                        handleContinue();
+                      } else if (userAnswer.trim() && !showFeedback) {
+                        // Submit answer if we have an answer and not showing feedback
+                        handleSubmitAnswer();
+                      }
                     }
                   }}
                   className="text-6xl py-8 pr-32 font-bold leading-tight placeholder:text-lg placeholder:text-slate-400"
