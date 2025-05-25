@@ -146,25 +146,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     }
   };
 
-  // Global keyboard listener for Enter when feedback is showing
-  useEffect(() => {
-    const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      // Only handle if the target is not the input field
-      if (e.key === 'Enter' && showFeedback && lastAnswer && e.target !== document.querySelector('input[type="text"]')) {
-        e.preventDefault();
-        console.log('Global Enter: Calling handleContinue');
-        handleContinue();
-      }
-    };
-
-    if (showFeedback) {
-      document.addEventListener('keydown', handleGlobalKeyDown);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleGlobalKeyDown);
-    };
-  }, [showFeedback, lastAnswer]);
+  // No global handler needed - input field handles both states
 
   const handleSkipQuestion = () => {
     handleSubmitAnswer(); // Submit empty answer
@@ -338,10 +320,17 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                     value={userAnswer}
                     onChange={(e) => setUserAnswer(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !showFeedback) {
+                      if (e.key === 'Enter') {
                         e.preventDefault();
-                        console.log('Input Enter: Calling handleSubmitAnswer');
-                        if (userAnswer.trim()) {
+                        console.log('Enter key pressed!');
+                        console.log('showFeedback:', showFeedback);
+                        console.log('lastAnswer:', lastAnswer);
+                        
+                        if (showFeedback && lastAnswer) {
+                          console.log('Enter: Calling handleContinue');
+                          handleContinue();
+                        } else if (!showFeedback && userAnswer.trim()) {
+                          console.log('Enter: Calling handleSubmitAnswer');
                           handleSubmitAnswer();
                         }
                       }
