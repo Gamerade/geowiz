@@ -89,8 +89,13 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
       timeSpent: 60 - timeRemaining
     };
 
+    console.log('Setting feedback data:', mockAnswer);
+    console.log('Current showFeedback before:', showFeedback);
+    
     setLastAnswer(mockAnswer);
     setShowFeedback(true);
+    
+    console.log('Should show feedback now');
     
     if (isCorrect) {
       updateScore(100);
@@ -367,6 +372,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
       </div>
 
       {/* Inline Feedback - replaces question area when showing feedback */}
+      {console.log('Render check - showFeedback:', showFeedback, 'lastAnswer:', lastAnswer)}
       {showFeedback && lastAnswer && (
         <div className="max-w-4xl mx-auto text-center space-y-6">
           {/* Result Header */}
