@@ -104,6 +104,9 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     setHasSubmitted(true);  // ✅ Enable Enter to continue
     
     console.log('Feedback state set immediately - should show now!');
+    console.log('showFeedback after setting:', showFeedback);
+    console.log('lastAnswer after setting:', answerResult);
+    console.log('hasSubmitted after setting:', hasSubmitted);
     
     if (isCorrect) {
       updateScore(100);
@@ -141,24 +144,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     }
   };
 
-  // Add global keyboard listener for Enter-to-continue when feedback is shown
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && showFeedback) {
-        e.preventDefault();
-        e.stopPropagation();
-        handleContinue();
-      }
-    };
-
-    if (showFeedback) {
-      document.addEventListener('keydown', handleKeyDown);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [showFeedback]);
+  // Removed conflicting global Enter listener - now handled in input field only
 
   const handleSkipQuestion = () => {
     handleSubmitAnswer(); // Submit empty answer
