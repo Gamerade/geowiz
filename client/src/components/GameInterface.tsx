@@ -121,7 +121,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setCurrentQuestion(currentQuestionIndex + 1);
     }
-  }
+  };
 
   // Add global keyboard listener for Enter-to-continue when feedback is shown
   useEffect(() => {
@@ -168,55 +168,66 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-96">
+      <div className="flex justify-center items-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-slate-600">Loading questions...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+          <p className="text-lg text-slate-600">Loading your geography challenge...</p>
         </div>
       </div>
     );
   }
 
-  if (!questions || questions.length === 0) {
+  if (error || !questions || questions.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-slate-600 mb-4">No questions available for this mode and region.</p>
-        <Button onClick={onBackToMenu}>Back to Menu</Button>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <p className="text-lg text-red-600 mb-4">Unable to load questions. Please try again.</p>
+          <Button onClick={onBackToMenu}>Back to Menu</Button>
+        </div>
       </div>
     );
   }
 
-  const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+  if (!currentQuestion) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <p className="text-lg text-slate-600 mb-4">No more questions available.</p>
+          <Button onClick={onBackToMenu}>Back to Menu</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      {/* Game Header */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
+      {/* Header */}
       <Card className="mb-6">
         <CardContent className="p-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-blue-600 rounded-xl flex items-center justify-center">
-                {getQuestionIcon(currentQuestion?.visualType || null)}
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900 capitalize">
-                  {gameState.selectedMode?.replace('-', ' ')}
-                </h3>
-                <p className="text-sm text-slate-600 capitalize">
-                  {gameState.selectedRegion?.replace('-', ' ')} Challenge
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-6">
               {/* Progress */}
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-slate-600">Progress:</span>
-                <div className="w-24">
-                  <Progress value={progressPercentage} className="h-2" />
+              <div className="flex items-center space-x-3">
+                <Trophy className="w-6 h-6 text-amber-500" />
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-slate-700">Progress</span>
+                  <div className="flex items-center space-x-2">
+                    <Progress 
+                      value={(currentQuestionIndex / (questions?.length || 1)) * 100} 
+                      className="w-24 h-2"
+                    />
+                    <span className="text-xs text-slate-500 font-mono">
+                      {currentQuestionIndex + 1}/{questions?.length || 0}
+                    </span>
+                  </div>
                 </div>
-                <span className="text-sm font-mono text-slate-600">
-                  {currentQuestionIndex + 1}/{questions.length}
+              </div>
+
+              {/* Timer */}
+              <div className="bg-slate-100 rounded-lg px-3 py-2 flex items-center space-x-2">
+                <Clock className="w-4 h-4 text-slate-600" />
+                <span className="text-sm font-medium text-slate-700">
+                  {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
                 </span>
               </div>
 
@@ -241,108 +252,153 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
         </CardContent>
       </Card>
 
-      {/* Question Card */}
-      <Card className="mb-6">
-        <CardContent className="p-8">
-          <div className="max-w-4xl mx-auto">
-            {/* Question Type Badge */}
-            <div className="text-center mb-6">
-              <Badge className={`${getModeColor(gameState.selectedMode || '')} mb-4`}>
-                {getQuestionIcon(currentQuestion?.visualType || null)}
-                <span className="ml-2 capitalize">
-                  {currentQuestion?.mode?.replace('-', ' ')} Challenge
-                </span>
-              </Badge>
-            </div>
-
-            {/* Visual Content */}
-            {currentQuestion?.visualUrl && (
-              <div className="text-center mb-8">
-                {currentQuestion.visualType === 'flag' && (
-                  <div className="mb-6">
-                    <img 
-                      src={currentQuestion.visualUrl}
-                      alt="Country flag"
-                      className="w-64 h-48 object-cover rounded-xl shadow-lg mx-auto border-4 border-slate-200"
-                    />
-                  </div>
-                )}
-                {currentQuestion.visualType === 'outline' && (
-                  <div className="mb-6">
-                    <img 
-                      src={currentQuestion.visualUrl}
-                      alt="Country outline"
-                      className="w-64 h-48 object-cover rounded-xl shadow-lg mx-auto filter blur-sm"
-                    />
-                    <p className="text-sm text-slate-500 mt-2">Can you identify this country from its outline?</p>
-                  </div>
-                )}
+      {/* Main Game Content - Question or Feedback */}
+      {!showFeedback ? (
+        /* Question Card */
+        <Card className="mb-6">
+          <CardContent className="p-8">
+            <div className="max-w-4xl mx-auto">
+              {/* Question Type Badge */}
+              <div className="text-center mb-6">
+                <Badge className={`${getModeColor(gameState.selectedMode || '')} mb-4`}>
+                  {getQuestionIcon(currentQuestion?.visualType || null)}
+                  <span className="ml-2 capitalize">
+                    {currentQuestion?.mode?.replace('-', ' ')} Challenge
+                  </span>
+                </Badge>
               </div>
-            )}
 
-            {/* Question Text */}
-            <div className="text-center mb-8">
-              <h2 className="text-2xl lg:text-3xl font-semibold text-slate-900 mb-4">
-                {currentQuestion?.questionText}
-              </h2>
-              {currentQuestion?.hint && (
-                <p className="text-lg text-slate-600">
-                  {currentQuestion.hint}
-                </p>
+              {/* Visual Content */}
+              {currentQuestion?.visualUrl && (
+                <div className="text-center mb-8">
+                  {currentQuestion.visualType === 'flag' && (
+                    <div className="mb-6">
+                      <img 
+                        src={currentQuestion.visualUrl}
+                        alt="Country flag"
+                        className="w-64 h-48 object-cover rounded-xl shadow-lg mx-auto border-4 border-slate-200"
+                      />
+                    </div>
+                  )}
+                  {currentQuestion.visualType === 'outline' && (
+                    <div className="mb-6">
+                      <img 
+                        src={currentQuestion.visualUrl}
+                        alt="Country outline"
+                        className="w-64 h-48 object-cover rounded-xl shadow-lg mx-auto filter blur-sm"
+                      />
+                      <p className="text-sm text-slate-500 mt-2">Can you identify this country from its outline?</p>
+                    </div>
+                  )}
+                </div>
               )}
-            </div>
 
-            {/* Answer Input */}
-            <div className="max-w-2xl mx-auto">
-              <div className="relative">
-                <Input
-                  type="text"
-                  placeholder="Type answer..."
-                  value={userAnswer}
-                  onChange={(e) => setUserAnswer(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      if (showFeedback && lastAnswer) {
-                        handleContinue(); // Proceed to next question
-                      } else if (!showFeedback && goButtonRef.current) {
-                        goButtonRef.current.click(); // Simulate GO button click
-                      }
-                    }
-                  }}
-                  className="text-6xl py-8 pr-32 font-bold leading-tight placeholder:text-lg placeholder:text-slate-400"
-                  style={{ fontSize: '48px', lineHeight: '1.1' }}
-                  disabled={submitAnswerMutation.isPending}
-                />
-                <Button
-                  ref={goButtonRef}
-                  onClick={() => {
-                    console.log('GO button clicked!');
-                    handleSubmitAnswer();
-                  }}
-                  disabled={!userAnswer.trim() || submitAnswerMutation.isPending || showFeedback}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-16 w-20 rounded-lg bg-emerald-600 hover:bg-emerald-700"
-                  size="lg"
-                >
-                  {submitAnswerMutation.isPending ? "..." : "GO!"}
-                </Button>
+              {/* Question Text */}
+              <div className="text-center mb-8">
+                <h2 className="text-2xl lg:text-3xl font-semibold text-slate-900 mb-4">
+                  {currentQuestion?.questionText}
+                </h2>
+                {currentQuestion?.hint && (
+                  <p className="text-lg text-slate-600">
+                    {currentQuestion.hint}
+                  </p>
+                )}
               </div>
-              <div className="mt-4 text-center space-x-4">
-                <p className="text-sm text-slate-500">Press Enter or click GO!</p>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSkipQuestion}
-                  className="text-slate-500 hover:text-slate-700"
-                  disabled={submitAnswerMutation.isPending || showFeedback}
-                >
-                  Skip this question
-                </Button>
+
+              {/* Answer Input */}
+              <div className="max-w-2xl mx-auto">
+                <div className="relative">
+                  <Input
+                    type="text"
+                    placeholder="Type answer..."
+                    value={userAnswer}
+                    onChange={(e) => setUserAnswer(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (!showFeedback && goButtonRef.current) {
+                          goButtonRef.current.click(); // Simulate GO button click
+                        }
+                      }
+                    }}
+                    className="text-6xl py-8 pr-32 font-bold leading-tight placeholder:text-lg placeholder:text-slate-400"
+                    style={{ fontSize: '48px', lineHeight: '1.1' }}
+                    disabled={submitAnswerMutation.isPending}
+                  />
+                  <Button
+                    ref={goButtonRef}
+                    onClick={() => {
+                      console.log('GO button clicked!');
+                      handleSubmitAnswer();
+                    }}
+                    disabled={!userAnswer.trim() || submitAnswerMutation.isPending || showFeedback}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 h-16 w-20 rounded-lg bg-emerald-600 hover:bg-emerald-700"
+                  >
+                    <span className="text-white font-bold text-xl">GO</span>
+                  </Button>
+                </div>
+                <div className="mt-4 text-center space-x-4">
+                  <p className="text-sm text-slate-500">Press Enter or click GO!</p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleSkipQuestion}
+                    className="text-slate-500 hover:text-slate-700"
+                    disabled={submitAnswerMutation.isPending || showFeedback}
+                  >
+                    Skip this question
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ) : (
+        /* Feedback Card */
+        <Card className="mb-6">
+          <CardContent className="p-8">
+            <div className="max-w-4xl mx-auto text-center space-y-6">
+              {/* Result Header */}
+              <div className="space-y-3">
+                {lastAnswer?.isCorrect ? (
+                  <div>
+                    <div className="text-6xl mb-3">🎉</div>
+                    <h2 className="text-3xl font-bold text-emerald-500">Excellent!</h2>
+                    <p className="text-lg text-slate-700 mt-1">
+                      +{lastAnswer.scoreEarned} points! You're {getRankTitle(gameState.score)}!
+                    </p>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="text-6xl mb-3">📚</div>
+                    <h2 className="text-3xl font-bold text-blue-600">Good Try!</h2>
+                    <p className="text-lg text-slate-700 mt-1">
+                      The answer was: <span className="font-bold text-slate-900">{lastAnswer?.question?.answer || 'Unknown'}</span>
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Fun Fact */}
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 max-w-2xl mx-auto">
+                <h3 className="text-xl font-bold text-blue-800 mb-3 flex items-center justify-center">
+                  <Zap className="text-amber-500 mr-2 w-5 h-5" />
+                  Did you know?
+                </h3>
+                <p className="text-base text-slate-700 leading-relaxed">{lastAnswer?.question?.funFact || 'No fun fact available'}</p>
+              </div>
+
+              {/* Continue Instruction */}
+              <div className="text-center">
+                <p className="text-lg text-slate-600 mb-4">Press Enter to continue to the next question</p>
+                <div className="animate-pulse">
+                  <div className="w-16 h-1 bg-emerald-500 rounded mx-auto"></div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Timer and Stats */}
       <div className="flex justify-between items-center mb-6">
@@ -356,75 +412,31 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
       <div className="grid md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-primary">{gameState.correctAnswers}</div>
+            <div className="text-2xl font-bold text-emerald-600">{gameState.correctAnswers}</div>
             <div className="text-sm text-slate-600">Correct</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-red-500">{gameState.questionsAnswered - gameState.correctAnswers}</div>
-            <div className="text-sm text-slate-600">Incorrect</div>
+            <div className="text-2xl font-bold text-blue-600">{gameState.questionsAnswered}</div>
+            <div className="text-sm text-slate-600">Total</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-amber-500">{gameState.currentStreak}</div>
+            <div className="text-2xl font-bold text-amber-600">{gameState.currentStreak}</div>
             <div className="text-sm text-slate-600">Streak</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-emerald-500">
-              {gameState.questionsAnswered > 0 ? Math.round((gameState.correctAnswers / gameState.questionsAnswered) * 100) : 100}%
+            <div className="text-2xl font-bold text-purple-600">
+              {gameState.questionsAnswered > 0 ? Math.round((gameState.correctAnswers / gameState.questionsAnswered) * 100) : 0}%
             </div>
             <div className="text-sm text-slate-600">Accuracy</div>
           </CardContent>
         </Card>
       </div>
-
-      {/* Inline Feedback - replaces question area when showing feedback */}
-      {console.log('Render check - showFeedback:', showFeedback, 'lastAnswer:', lastAnswer)}
-      {showFeedback && lastAnswer && (
-        <div className="max-w-4xl mx-auto text-center space-y-6">
-          {/* Result Header */}
-          <div className="space-y-3">
-            {lastAnswer.isCorrect ? (
-              <div>
-                <div className="text-6xl mb-3">🎉</div>
-                <h2 className="text-3xl font-bold text-emerald-500">Excellent!</h2>
-                <p className="text-lg text-slate-700 mt-1">
-                  +{lastAnswer.scoreEarned} points! You're {getRankTitle(gameState.score)}!
-                </p>
-              </div>
-            ) : (
-              <div>
-                <div className="text-6xl mb-3">📚</div>
-                <h2 className="text-3xl font-bold text-blue-600">Good Try!</h2>
-                <p className="text-lg text-slate-700 mt-1">
-                  The answer was: <span className="font-bold text-slate-900">{lastAnswer.question?.answer || 'Unknown'}</span>
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Fun Fact */}
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 max-w-2xl mx-auto">
-            <h3 className="text-xl font-bold text-blue-800 mb-3 flex items-center justify-center">
-              <Zap className="text-amber-500 mr-2 w-5 h-5" />
-              Did you know?
-            </h3>
-            <p className="text-base text-slate-700 leading-relaxed">{lastAnswer.question?.funFact || 'No fun fact available'}</p>
-          </div>
-
-          {/* Continue Instruction */}
-          <div className="text-center">
-            <p className="text-lg text-slate-600 mb-4">Press Enter to continue to the next question</p>
-            <div className="animate-pulse">
-              <div className="w-16 h-1 bg-emerald-500 rounded mx-auto"></div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
