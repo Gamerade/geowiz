@@ -67,6 +67,8 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   useEffect(() => {
     setTimeRemaining(60);
     setUserAnswer("");
+    setShowFeedback(false);
+    setLastAnswer(null);
   }, [currentQuestionIndex]);
 
   const currentQuestion: Question | undefined = questions?.[currentQuestionIndex];
