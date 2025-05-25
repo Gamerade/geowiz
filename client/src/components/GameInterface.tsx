@@ -312,7 +312,10 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                   disabled={submitAnswerMutation.isPending || showFeedback}
                 />
                 <Button
-                  onClick={handleSubmitAnswer}
+                  onClick={() => {
+                    console.log('GO button clicked!');
+                    handleSubmitAnswer();
+                  }}
                   disabled={!userAnswer.trim() || submitAnswerMutation.isPending || showFeedback}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 h-16 w-20 rounded-lg bg-emerald-600 hover:bg-emerald-700"
                   size="lg"
