@@ -15,9 +15,11 @@ import SuccessAnimation from "@/components/SuccessAnimation";
 
 interface GameInterfaceProps {
   onBackToMenu: () => void;
+  selectedMode?: string;
+  selectedRegion?: string;
 }
 
-export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
+export default function GameInterface({ onBackToMenu, selectedMode, selectedRegion }: GameInterfaceProps) {
   const { gameState, updateScore, incrementQuestion, setCurrentQuestion, completeGame } = useGameState();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState("");
@@ -30,19 +32,18 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   const isInFeedbackMode = useRef(false);
   const goButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Fetch questions for current game - add fallback for when state sync is broken
-  const modeToUse = gameState.selectedMode || 'capitals'; // Default to capitals mode
-  const regionToUse = gameState.selectedRegion || 'global'; // Default to global region
+  // Use props first, then game state, then fallback
+  const modeToUse = selectedMode || gameState.selectedMode || 'capitals';
+  const regionToUse = selectedRegion || gameState.selectedRegion || 'global';
   
   const { data: questions, isLoading, error } = useQuery({
     queryKey: [`/api/questions/${modeToUse}/${regionToUse}`],
-    enabled: true // Always enable since we have fallbacks
+    enabled: true
   });
 
   console.log('Game state:', gameState);
-  console.log('Selected mode:', gameState.selectedMode);
-  console.log('Selected region:', gameState.selectedRegion);
-  console.log('Query enabled:', !!(gameState.selectedMode && gameState.selectedRegion));
+  console.log('Mode being used:', modeToUse);
+  console.log('Region being used:', regionToUse);
   console.log('Questions data:', questions);
   console.log('Loading state:', isLoading);
   console.log('Error:', error);
