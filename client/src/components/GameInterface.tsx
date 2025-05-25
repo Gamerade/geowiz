@@ -71,15 +71,31 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   const currentQuestion: Question | undefined = questions?.[currentQuestionIndex];
 
   const handleSubmitAnswer = () => {
-    if (!currentQuestion || !gameState.sessionId || submitAnswerMutation.isPending) return;
+    if (!currentQuestion || !userAnswer.trim() || submitAnswerMutation.isPending) return;
 
-    const timeSpent = 60 - timeRemaining;
-    submitAnswerMutation.mutate({
-      sessionId: gameState.sessionId,
-      questionId: currentQuestion.id,
-      userAnswer: userAnswer.trim(),
-      timeSpent
-    });
+    // Simple answer checking for immediate gameplay
+    const userAnswerLower = userAnswer.trim().toLowerCase();
+    const correctAnswer = currentQuestion.answer.toLowerCase();
+    const alternativeAnswers = currentQuestion.alternativeAnswers || [];
+    
+    const isCorrect = userAnswerLower === correctAnswer || 
+                     alternativeAnswers.some(alt => alt.toLowerCase() === userAnswerLower);
+
+    const mockAnswer = {
+      isCorrect,
+      correctAnswer: currentQuestion.answer,
+      funFact: currentQuestion.funFact,
+      scoreEarned: isCorrect ? 100 : 0,
+      timeSpent: 60 - timeRemaining
+    };
+
+    setLastAnswer(mockAnswer);
+    setShowFeedback(true);
+    
+    if (isCorrect) {
+      updateScore(100);
+      incrementQuestion();
+    }
   };
 
   const handleContinue = () => {
