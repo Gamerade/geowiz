@@ -95,13 +95,16 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     
     if (isCorrect) {
       updateScore(100);
-      incrementQuestion();
     }
   };
 
   const handleContinue = () => {
     setShowFeedback(false);
     setLastAnswer(null);
+    setUserAnswer(''); // Clear the input for next question
+    
+    // Always increment question when continuing
+    incrementQuestion();
     
     if (currentQuestionIndex >= (questions?.length || 0) - 1) {
       // Game complete
