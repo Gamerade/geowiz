@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   const [timeRemaining, setTimeRemaining] = useState(60);
   const [showFeedback, setShowFeedback] = useState(false);
   const [lastAnswer, setLastAnswer] = useState<any>(null);
+  const goButtonRef = useRef<HTMLButtonElement>(null);
 
   // Fetch questions for current game - using direct values since state sync is broken
   const { data: questions, isLoading, error } = useQuery({
@@ -303,12 +304,9 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                     if (e.key === 'Enter') {
                       e.preventDefault();
                       if (showFeedback && lastAnswer) {
-                        // Continue to next question if showing feedback
-                        handleContinue();
-                      } else if (userAnswer.trim() && !showFeedback && !submitAnswerMutation.isPending) {
-                        // Call the exact same function as GO button with same conditions
-                        console.log('Enter key pressed - calling same function as GO button');
-                        handleSubmitAnswer();
+                        handleContinue(); // Proceed to next question
+                      } else if (!showFeedback && goButtonRef.current) {
+                        goButtonRef.current.click(); // Simulate GO button click
                       }
                     }
                   }}
@@ -317,6 +315,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                   disabled={submitAnswerMutation.isPending}
                 />
                 <Button
+                  ref={goButtonRef}
                   onClick={() => {
                     console.log('GO button clicked!');
                     handleSubmitAnswer();
