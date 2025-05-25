@@ -275,20 +275,20 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                       handleSubmitAnswer();
                     }
                   }}
-                  className="text-3xl py-8 pr-32 font-medium"
+                  className="text-4xl py-8 pr-32 font-bold"
                   disabled={submitAnswerMutation.isPending || showFeedback}
                 />
                 <Button
                   onClick={handleSubmitAnswer}
                   disabled={!userAnswer.trim() || submitAnswerMutation.isPending || showFeedback}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-16 w-16 rounded-full"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-16 w-20 rounded-lg bg-emerald-600 hover:bg-emerald-700"
                   size="lg"
                 >
-                  {submitAnswerMutation.isPending ? "..." : "▶"}
+                  {submitAnswerMutation.isPending ? "..." : "GO!"}
                 </Button>
               </div>
               <div className="mt-4 text-center space-x-4">
-                <p className="text-sm text-slate-500">Press Enter or click the play button</p>
+                <p className="text-sm text-slate-500">Press Enter or click GO!</p>
                 <Button
                   variant="ghost"
                   size="sm"
