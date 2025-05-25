@@ -343,47 +343,46 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
         </Card>
       </div>
 
-      {/* Feedback Modal */}
+      {/* Inline Feedback - replaces question area when showing feedback */}
       {showFeedback && lastAnswer && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <Card className="max-w-md w-full">
-            <CardContent className="p-8 text-center">
-              {lastAnswer.isCorrect ? (
-                <div>
-                  <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Trophy className="text-white text-2xl" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-emerald-500 mb-2">Excellent!</h3>
-                  <p className="text-lg text-slate-700 mb-4">
-                    +{lastAnswer.scoreEarned} points! You're getting better!
-                  </p>
-                </div>
-              ) : (
-                <div>
-                  <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <X className="text-white text-2xl" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-red-500 mb-2">Not quite!</h3>
-                  <p className="text-lg text-slate-700 mb-4">
-                    The answer was <span className="font-semibold text-primary">{lastAnswer.question.answer}</span>
-                  </p>
-                </div>
-              )}
-
-              {/* Fun Fact */}
-              <div className="bg-slate-50 rounded-xl p-4 mb-6">
-                <h4 className="font-semibold text-slate-900 mb-2 flex items-center justify-center">
-                  <Zap className="text-amber-500 mr-2 w-4 h-4" />
-                  Did you know?
-                </h4>
-                <p className="text-sm text-slate-600">{lastAnswer.funFact}</p>
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          {/* Result Header */}
+          <div className="space-y-4">
+            {lastAnswer.isCorrect ? (
+              <div>
+                <div className="text-8xl mb-4">🎉</div>
+                <h2 className="text-4xl font-bold text-emerald-500">Excellent!</h2>
+                <p className="text-xl text-slate-700 mt-2">
+                  +{lastAnswer.scoreEarned} points! You're getting better!
+                </p>
               </div>
+            ) : (
+              <div>
+                <div className="text-8xl mb-4">📚</div>
+                <h2 className="text-4xl font-bold text-blue-600">Good Try!</h2>
+                <p className="text-xl text-slate-700 mt-2">
+                  The answer was: <span className="font-bold text-slate-900">{lastAnswer.question.answer}</span>
+                </p>
+              </div>
+            )}
+          </div>
 
-              <Button onClick={handleContinue} className="w-full">
-                {currentQuestionIndex >= questions.length - 1 ? "Complete Game" : "Continue Adventure"}
-              </Button>
-            </CardContent>
-          </Card>
+          {/* Fun Fact */}
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 max-w-2xl mx-auto">
+            <h3 className="text-2xl font-bold text-blue-800 mb-4 flex items-center justify-center">
+              <Zap className="text-amber-500 mr-3 w-6 h-6" />
+              Did you know?
+            </h3>
+            <p className="text-lg text-slate-700 leading-relaxed">{lastAnswer.funFact}</p>
+          </div>
+
+          {/* Continue Button */}
+          <Button 
+            onClick={handleContinue} 
+            className="bg-emerald-600 hover:bg-emerald-700 text-white px-12 py-4 rounded-xl text-xl font-semibold"
+          >
+            {currentQuestionIndex >= questions.length - 1 ? "Complete Game" : "Continue Adventure"}
+          </Button>
         </div>
       )}
     </div>
