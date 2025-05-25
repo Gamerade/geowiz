@@ -10,7 +10,7 @@ import { useGameState } from "@/hooks/useGameState";
 import { Trophy, Star, Globe, MapPin, Flag, Clock, Flame, Crown } from "lucide-react";
 
 export default function Home() {
-  const { gameState, startGame, resetGame } = useGameState();
+  const { gameState, startGame, resetGame, setSelectedMode, setSelectedRegion } = useGameState();
   const [currentSection, setCurrentSection] = useState<'welcome' | 'modes' | 'regions' | 'game'>('welcome');
 
   const handleStartAdventure = () => {
@@ -19,11 +19,13 @@ export default function Home() {
 
   const handleModeSelect = (mode: string) => {
     console.log('Home: Mode selected:', mode);
+    setSelectedMode(mode as any);
     setCurrentSection('regions');
   };
 
   const handleRegionSelect = (region: string) => {
     console.log('Home: Region selected:', region);
+    setSelectedRegion(region as any);
     setCurrentSection('game');
     startGame();
   };
