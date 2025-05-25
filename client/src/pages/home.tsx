@@ -18,10 +18,12 @@ export default function Home() {
   };
 
   const handleModeSelect = (mode: string) => {
+    console.log('Home: Mode selected:', mode);
     setCurrentSection('regions');
   };
 
   const handleRegionSelect = (region: string) => {
+    console.log('Home: Region selected:', region);
     setCurrentSection('game');
     startGame();
   };
