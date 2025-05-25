@@ -325,14 +325,13 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                         console.log('lastAnswer:', lastAnswer);
                         console.log('hasSubmitted:', hasSubmitted);
                         console.log('userAnswer:', userAnswer);
-                        console.log('submitAnswerMutation.isPending:', submitAnswerMutation.isPending);
 
-                        if (showFeedback && lastAnswer && hasSubmitted) {
+                        if (showFeedback && lastAnswer) {
                           console.log('Enter: Calling handleContinue');
                           handleContinue();
-                        } else if (!showFeedback && userAnswer.trim() && !submitAnswerMutation.isPending) {
+                        } else if (!showFeedback && userAnswer.trim()) {
                           console.log('Enter: Calling handleSubmitAnswer');
-                          handleSubmitAnswer(); // skip goButtonRef, call the real logic
+                          handleSubmitAnswer();
                         } else {
                           console.log('Enter: No action taken - conditions not met');
                         }
