@@ -216,7 +216,7 @@ export class MemStorage implements IStorage {
 
   private initializeSampleQuestions() {
     const sampleQuestions: InsertQuestion[] = [
-      // Mispronounced Capitals
+      // Mispronounced Capitals (10 questions)
       {
         mode: "mispronounced-capitals",
         region: "global",
@@ -239,7 +239,95 @@ export class MemStorage implements IStorage {
         difficulty: 4,
         visualType: "text"
       },
-      // Flag Quirks
+      {
+        mode: "mispronounced-capitals",
+        region: "global",
+        questionText: "What is the capital of Qatar that's commonly mispronounced?",
+        hint: "It's 'Doh-ha', not 'Do-ha'",
+        answer: "doha",
+        alternativeAnswers: ["dohha"],
+        funFact: "Doha means 'the big tree' in Arabic and is home to over 80% of Qatar's population!",
+        difficulty: 2,
+        visualType: "text"
+      },
+      {
+        mode: "mispronounced-capitals",
+        region: "global",
+        questionText: "What is the capital of Uruguay that people often struggle to pronounce?",
+        hint: "It's 'Mon-te-vi-DAY-o', with emphasis on the last syllable",
+        answer: "montevideo",
+        alternativeAnswers: ["montevidayo"],
+        funFact: "Montevideo was named after Monte VI De Oriente, meaning 'I saw the sixth mountain from the east'!",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "mispronounced-capitals",
+        region: "global",
+        questionText: "What is the capital of Azerbaijan that's frequently mispronounced?",
+        hint: "It's 'Ba-KOO', not 'Ba-KU'",
+        answer: "baku",
+        alternativeAnswers: ["bakoo"],
+        funFact: "Baku is known as the 'City of Winds' and has been producing oil for over 1,000 years!",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "mispronounced-capitals",
+        region: "global",
+        questionText: "What is the capital of Myanmar that many mispronounce?",
+        hint: "It's 'Nay-pyi-DAW', not 'Nay-pee-do'",
+        answer: "naypyidaw",
+        alternativeAnswers: ["naypyitaw", "naypyido"],
+        funFact: "Naypyidaw was built from scratch in 2005 and is one of the world's largest capital cities by area!",
+        difficulty: 5,
+        visualType: "text"
+      },
+      {
+        mode: "mispronounced-capitals",
+        region: "global",
+        questionText: "What is the capital of Djibouti that shares its name with the country?",
+        hint: "It's 'ji-BOO-tee', not 'Dji-bow-ti'",
+        answer: "djibouti",
+        alternativeAnswers: ["jibouti"],
+        funFact: "Djibouti City is strategically located at the entrance to the Red Sea and serves as a major shipping hub!",
+        difficulty: 4,
+        visualType: "text"
+      },
+      {
+        mode: "mispronounced-capitals",
+        region: "global",
+        questionText: "What is the capital of Laos that's often mispronounced?",
+        hint: "It's 'Vi-en-CHAN', not 'Vi-en-tiane'",
+        answer: "vientiane",
+        alternativeAnswers: ["vienchan"],
+        funFact: "Vientiane means 'city of sandalwood' and is one of the most laid-back capital cities in Asia!",
+        difficulty: 4,
+        visualType: "text"
+      },
+      {
+        mode: "mispronounced-capitals",
+        region: "global",
+        questionText: "What is the capital of Burkina Faso that people often mispronounce?",
+        hint: "It's 'Wa-ga-DOO-goo', not 'Ou-ga-dou-gou'",
+        answer: "ouagadougou",
+        alternativeAnswers: ["wagadougou"],
+        funFact: "Ouagadougou means 'where people get honor and respect' and hosts Africa's largest film festival!",
+        difficulty: 5,
+        visualType: "text"
+      },
+      {
+        mode: "mispronounced-capitals",
+        region: "global",
+        questionText: "What is the capital of Sri Lanka that's commonly mispronounced?",
+        hint: "It's 'Sri JAY-a-war-da-na-POO-ra KOT-te', but you can say 'Ko-tte'",
+        answer: "kotte",
+        alternativeAnswers: ["sri jayawardenepura kotte", "jayawardenepura"],
+        funFact: "The full name is one of the longest capital city names in the world! Most locals just call it Kotte.",
+        difficulty: 4,
+        visualType: "text"
+      },
+      // Flag Quirks (10 questions)
       {
         mode: "flag-quirks",
         region: "global",
@@ -255,16 +343,111 @@ export class MemStorage implements IStorage {
       {
         mode: "flag-quirks",
         region: "global",
-        questionText: "Which country's flag changes design depending on whether it's war or peace time?",
-        hint: "This South Asian kingdom has two different flag versions.",
-        answer: "afghanistan",
+        questionText: "Which country's flag is the only one that's not rectangular?",
+        hint: "This Himalayan kingdom has a unique double-pennant design.",
+        answer: "nepal",
         alternativeAnswers: [],
-        funFact: "Afghanistan's flag has changed more than any other country's flag, with 26 different designs since 1901. The current design was adopted in 2021.",
+        funFact: "Nepal's flag consists of two triangular pennants representing the Himalayas. The sun and moon symbols represent the hope that Nepal will last as long as these celestial bodies.",
+        difficulty: 3,
+        visualType: "flag",
+        visualUrl: "https://flagcdn.com/w320/np.png"
+      },
+      {
+        mode: "flag-quirks",
+        region: "global",
+        questionText: "Which country has a flag that's completely different on each side?",
+        hint: "This South American nation shows its coat of arms on one side only.",
+        answer: "paraguay",
+        alternativeAnswers: [],
+        funFact: "Paraguay's flag has different emblems on each side - the national coat of arms on the front and the seal of the treasury on the back, making it one of only three flags with different designs on each side.",
         difficulty: 4,
         visualType: "flag",
-        visualUrl: "https://flagcdn.com/w320/af.png"
+        visualUrl: "https://flagcdn.com/w320/py.png"
       },
-      // Multiple Capitals
+      {
+        mode: "flag-quirks",
+        region: "global",
+        questionText: "Which country's flag features a building (a temple)?",
+        hint: "This Southeast Asian kingdom's flag shows Angkor Wat.",
+        answer: "cambodia",
+        alternativeAnswers: [],
+        funFact: "Cambodia's flag is the only national flag in the world to feature a building - the famous Angkor Wat temple complex, which is also a UNESCO World Heritage site.",
+        difficulty: 3,
+        visualType: "flag",
+        visualUrl: "https://flagcdn.com/w320/kh.png"
+      },
+      {
+        mode: "flag-quirks",
+        region: "global",
+        questionText: "Which country has a flag with the most colors (12 different colors)?",
+        hint: "This island nation in the Indian Ocean has a very colorful flag.",
+        answer: "belize",
+        alternativeAnswers: [],
+        funFact: "Belize's flag has 12 different colors, making it the most colorful national flag in the world. It features the national coat of arms on a blue field with red stripes.",
+        difficulty: 4,
+        visualType: "flag",
+        visualUrl: "https://flagcdn.com/w320/bz.png"
+      },
+      {
+        mode: "flag-quirks",
+        region: "global",
+        questionText: "Which country's flag features a sword?",
+        hint: "This Middle Eastern kingdom's flag has Arabic text and a sword underneath.",
+        answer: "saudi arabia",
+        alternativeAnswers: [],
+        funFact: "Saudi Arabia's flag features the Islamic creed and a sword. The green represents Islam, and the flag is never flown at half-mast because the Islamic creed should never be lowered.",
+        difficulty: 2,
+        visualType: "flag",
+        visualUrl: "https://flagcdn.com/w320/sa.png"
+      },
+      {
+        mode: "flag-quirks",
+        region: "global",
+        questionText: "Which country has a flag that features a tree?",
+        hint: "This Middle Eastern nation's flag shows a cedar tree.",
+        answer: "lebanon",
+        alternativeAnswers: [],
+        funFact: "Lebanon's flag features a cedar tree, which has been a symbol of the country for over 3,000 years. The Lebanon cedar is mentioned multiple times in the Bible.",
+        difficulty: 2,
+        visualType: "flag",
+        visualUrl: "https://flagcdn.com/w320/lb.png"
+      },
+      {
+        mode: "flag-quirks",
+        region: "global",
+        questionText: "Which country's flag changes color when viewed from different angles?",
+        hint: "This is actually a trick question - no flag does this!",
+        answer: "none",
+        alternativeAnswers: ["no country", "trick question"],
+        funFact: "This was a trick question! While some flags have metallic elements that might appear to shimmer, no national flag actually changes color when viewed from different angles.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "flag-quirks",
+        region: "global",
+        questionText: "Which country has a flag featuring a dragon?",
+        hint: "This Himalayan kingdom is known as the 'Land of the Thunder Dragon.'",
+        answer: "bhutan",
+        alternativeAnswers: [],
+        funFact: "Bhutan's flag features a white dragon holding jewels, representing the country's name 'Druk Yul' meaning 'Land of the Thunder Dragon.' The dragon represents the protection of the country.",
+        difficulty: 3,
+        visualType: "flag",
+        visualUrl: "https://flagcdn.com/w320/bt.png"
+      },
+      {
+        mode: "flag-quirks",
+        region: "global",
+        questionText: "Which country's flag is identical to Chad's flag?",
+        hint: "This Eastern European nation has the exact same flag design as an African country.",
+        answer: "romania",
+        alternativeAnswers: [],
+        funFact: "Romania and Chad have nearly identical flags, both featuring blue, yellow, and red vertical stripes. Chad adopted its flag in 1959, while Romania has used this design since 1989.",
+        difficulty: 4,
+        visualType: "flag",
+        visualUrl: "https://flagcdn.com/w320/ro.png"
+      },
+      // Multiple Capitals (10 questions)
       {
         mode: "multiple-capitals",
         region: "global",
@@ -287,7 +470,95 @@ export class MemStorage implements IStorage {
         difficulty: 2,
         visualType: "text"
       },
-      // Hidden Outlines
+      {
+        mode: "multiple-capitals",
+        region: "global",
+        questionText: "Which country has La Paz as its administrative capital and Sucre as its constitutional capital?",
+        hint: "This South American country is landlocked and famous for its salt flats.",
+        answer: "bolivia",
+        alternativeAnswers: [],
+        funFact: "Bolivia has two capitals: Sucre is the constitutional capital where the Supreme Court sits, while La Paz is the administrative capital housing the government and parliament.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "multiple-capitals",
+        region: "global",
+        questionText: "Which country considers both Yamoussoukro and Abidjan as capitals?",
+        hint: "This West African nation is famous for cocoa production.",
+        answer: "ivory coast",
+        alternativeAnswers: ["cote d'ivoire"],
+        funFact: "Côte d'Ivoire has Yamoussoukro as its political capital since 1983, but Abidjan remains the economic capital and largest city where most government offices are still located.",
+        difficulty: 4,
+        visualType: "text"
+      },
+      {
+        mode: "multiple-capitals",
+        region: "global",
+        questionText: "Which country has both Putrajaya and Kuala Lumpur as capitals?",
+        hint: "This Southeast Asian nation is known for its twin towers.",
+        answer: "malaysia",
+        alternativeAnswers: [],
+        funFact: "Malaysia has Kuala Lumpur as its largest city and former capital, while Putrajaya serves as the new administrative capital built in the 1990s to house government offices.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "multiple-capitals",
+        region: "global",
+        questionText: "Which country has both Dodoma and Dar es Salaam functioning as capitals?",
+        hint: "This East African nation is home to Mount Kilimanjaro.",
+        answer: "tanzania",
+        alternativeAnswers: [],
+        funFact: "Tanzania officially moved its capital from Dar es Salaam to Dodoma in 1996, but many government functions and embassies remain in Dar es Salaam, creating a dual capital situation.",
+        difficulty: 4,
+        visualType: "text"
+      },
+      {
+        mode: "multiple-capitals",
+        region: "global",
+        questionText: "Which country has both Bern as its federal capital and Zurich as its largest city?",
+        hint: "This European country is famous for chocolate, watches, and neutrality.",
+        answer: "switzerland",
+        alternativeAnswers: [],
+        funFact: "Switzerland has Bern as its federal capital, but the country operates more like a confederation with Zurich being the economic center and Geneva hosting many international organizations.",
+        difficulty: 2,
+        visualType: "text"
+      },
+      {
+        mode: "multiple-capitals",
+        region: "global",
+        questionText: "Which country has both Sri Jayawardenepura Kotte and Colombo as capitals?",
+        hint: "This island nation in the Indian Ocean is famous for tea and elephants.",
+        answer: "sri lanka",
+        alternativeAnswers: [],
+        funFact: "Sri Lanka has Sri Jayawardenepura Kotte as its legislative capital while Colombo serves as the commercial capital and largest city. Most people simply refer to the capital as Colombo.",
+        difficulty: 4,
+        visualType: "text"
+      },
+      {
+        mode: "multiple-capitals",
+        region: "global",
+        questionText: "Which country has both Lagos and Abuja as major cities, with one being the former capital?",
+        hint: "This West African nation is the most populous country in Africa.",
+        answer: "nigeria",
+        alternativeAnswers: [],
+        funFact: "Nigeria moved its capital from Lagos to Abuja in 1991. Lagos remains the commercial capital and largest city, while Abuja serves as the political capital.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "multiple-capitals",
+        region: "global",
+        questionText: "Which country has both Tel Aviv and Jerusalem claimed as capitals?",
+        hint: "This Middle Eastern nation has disputed capital status internationally.",
+        answer: "israel",
+        alternativeAnswers: [],
+        funFact: "Israel considers Jerusalem its capital, but most countries maintain embassies in Tel Aviv due to the disputed status of Jerusalem in international law.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      // Hidden Outlines (10 questions)
       {
         mode: "hidden-outlines",
         region: "global",
@@ -297,8 +568,7 @@ export class MemStorage implements IStorage {
         alternativeAnswers: [],
         funFact: "Italy's distinctive boot shape is instantly recognizable on maps. The 'heel' of the boot is the region of Puglia, while the 'toe' is Calabria.",
         difficulty: 1,
-        visualType: "outline",
-        visualUrl: "https://www.countryflags.io/it/shiny/64.png"
+        visualType: "outline"
       },
       {
         mode: "hidden-outlines",
@@ -309,10 +579,97 @@ export class MemStorage implements IStorage {
         alternativeAnswers: [],
         funFact: "Chile is the world's longest country, stretching over 4,300 kilometers from north to south, but averaging only 180 kilometers in width. It spans 38 degrees of latitude!",
         difficulty: 2,
-        visualType: "outline",
-        visualUrl: "https://www.countryflags.io/cl/shiny/64.png"
+        visualType: "outline"
       },
-      // Mystery Mix
+      {
+        mode: "hidden-outlines",
+        region: "global",
+        questionText: "Which island nation has this distinctive shape in the Mediterranean?",
+        hint: "This triangular island is known for Mount Etna and is part of Italy.",
+        answer: "sicily",
+        alternativeAnswers: [],
+        funFact: "Sicily is the largest island in the Mediterranean Sea and has a distinctive triangular shape. Mount Etna, one of the world's most active volcanoes, dominates the eastern part of the island.",
+        difficulty: 3,
+        visualType: "outline"
+      },
+      {
+        mode: "hidden-outlines",
+        region: "global",
+        questionText: "Which country resembles an elephant's head facing east?",
+        hint: "This West African nation is famous for its gold and cocoa production.",
+        answer: "ghana",
+        alternativeAnswers: [],
+        funFact: "Ghana's outline resembles an elephant's head when viewed on a map, with the Volta region forming the 'trunk' extending eastward into the Atlantic Ocean.",
+        difficulty: 4,
+        visualType: "outline"
+      },
+      {
+        mode: "hidden-outlines",
+        region: "global",
+        questionText: "Which country has a distinctive shape that looks like a sitting dog?",
+        hint: "This South American country is famous for tango and beef.",
+        answer: "argentina",
+        alternativeAnswers: [],
+        funFact: "Argentina's distinctive shape on the map resembles a sitting dog, with Patagonia forming the 'body' and the northern regions forming the 'head' looking eastward.",
+        difficulty: 3,
+        visualType: "outline"
+      },
+      {
+        mode: "hidden-outlines",
+        region: "global",
+        questionText: "Which island looks like a tear drop in the Indian Ocean?",
+        hint: "This island nation is known for tea, cinnamon, and beautiful beaches.",
+        answer: "sri lanka",
+        alternativeAnswers: [],
+        funFact: "Sri Lanka's teardrop shape has led to it being called the 'Pearl of the Indian Ocean.' The island was historically known as Ceylon.",
+        difficulty: 3,
+        visualType: "outline"
+      },
+      {
+        mode: "hidden-outlines",
+        region: "global",
+        questionText: "Which country looks like a sideways 'S' shape?",
+        hint: "This Southeast Asian country is shaped like a dragon and famous for pho.",
+        answer: "vietnam",
+        alternativeAnswers: [],
+        funFact: "Vietnam's distinctive S-shaped coastline stretches over 3,200 kilometers along the South China Sea, giving it a unique serpentine appearance on maps.",
+        difficulty: 2,
+        visualType: "outline"
+      },
+      {
+        mode: "hidden-outlines",
+        region: "global",
+        questionText: "Which European country resembles a fish swimming westward?",
+        hint: "This Nordic country is famous for fjords and the Northern Lights.",
+        answer: "norway",
+        alternativeAnswers: [],
+        funFact: "Norway's distinctive shape with its many fjords and elongated coastline resembles a fish swimming toward the Atlantic Ocean, with the Lofoten Islands forming the 'tail.'",
+        difficulty: 3,
+        visualType: "outline"
+      },
+      {
+        mode: "hidden-outlines",
+        region: "global",
+        questionText: "Which country has a shape that resembles a upside-down triangle?",
+        hint: "This South Asian country is known as a subcontinent.",
+        answer: "india",
+        alternativeAnswers: [],
+        funFact: "India's triangular shape points southward into the Indian Ocean, with the Himalayas forming the northern border and the Western and Eastern Ghats along the coasts.",
+        difficulty: 2,
+        visualType: "outline"
+      },
+      {
+        mode: "hidden-outlines",
+        region: "global",
+        questionText: "Which African country has a distinctive panhandle extending westward?",
+        hint: "This landlocked country in southern Africa is famous for its wildlife and the Kalahari Desert.",
+        answer: "botswana",
+        alternativeAnswers: [],
+        funFact: "Botswana's distinctive shape includes the Caprivi Strip-like panhandle that extends westward, giving it a unique appearance among African nations.",
+        difficulty: 4,
+        visualType: "outline"
+      },
+      // Mystery Mix (10 questions)
       {
         mode: "mystery-mix",
         region: "global",
@@ -327,12 +684,100 @@ export class MemStorage implements IStorage {
       {
         mode: "mystery-mix",
         region: "global",
-        questionText: "Which country has the highest capital city in the world?",
-        hint: "This South American country's administrative capital sits at over 3,500 meters above sea level.",
-        answer: "bolivia",
+        questionText: "Which country has more time zones than any other?",
+        hint: "This country spans 11 time zones from Europe to Asia.",
+        answer: "russia",
         alternativeAnswers: [],
-        funFact: "La Paz, Bolivia's administrative capital, sits at 3,515 meters (11,532 feet) above sea level, making it the highest capital city in the world. The thin air can leave visitors breathless!",
+        funFact: "Russia spans 11 time zones, more than any other country. When it's midnight in Moscow, it's already 9 AM in Kamchatka on the far eastern coast!",
         difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "mystery-mix",
+        region: "global",
+        questionText: "Which country is home to the world's largest desert?",
+        hint: "This desert is larger than the entire United States!",
+        answer: "antarctica",
+        alternativeAnswers: [],
+        funFact: "Antarctica contains the world's largest desert - not the Sahara! It's a cold desert with less than 2 inches of precipitation per year.",
+        difficulty: 4,
+        visualType: "text"
+      },
+      {
+        mode: "mystery-mix",
+        region: "global",
+        questionText: "Which country has the most UNESCO World Heritage Sites?",
+        hint: "This European country is famous for art, history, and amazing food.",
+        answer: "italy",
+        alternativeAnswers: [],
+        funFact: "Italy has 58 UNESCO World Heritage Sites, more than any other country. From the Colosseum to Venice, Italy is a treasure trove of cultural heritage!",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "mystery-mix",
+        region: "global",
+        questionText: "Which country is located on two continents?",
+        hint: "This country bridges Europe and Asia, with its largest city split between both continents.",
+        answer: "turkey",
+        alternativeAnswers: [],
+        funFact: "Turkey is the only country that spans two continents - Europe and Asia. Istanbul, its largest city, is literally split between both continents by the Bosphorus strait!",
+        difficulty: 2,
+        visualType: "text"
+      },
+      {
+        mode: "mystery-mix",
+        region: "global",
+        questionText: "Which country has no rivers?",
+        hint: "This wealthy Middle Eastern nation relies entirely on desalination for fresh water.",
+        answer: "saudi arabia",
+        alternativeAnswers: [],
+        funFact: "Saudi Arabia is the largest country in the world with no rivers. The country relies on desalination plants and underground aquifers for its water supply.",
+        difficulty: 4,
+        visualType: "text"
+      },
+      {
+        mode: "mystery-mix",
+        region: "global",
+        questionText: "Which country has the most natural lakes?",
+        hint: "This North American country has over 36,000 lakes larger than 5 hectares.",
+        answer: "canada",
+        alternativeAnswers: [],
+        funFact: "Canada has more lakes than the rest of the world combined! It contains over 36,000 lakes larger than 5 hectares, including the Great Lakes shared with the US.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "mystery-mix",
+        region: "global",
+        questionText: "Which European country has never been conquered?",
+        hint: "This mountainous nation is famous for its neutrality and chocolate.",
+        answer: "switzerland",
+        alternativeAnswers: [],
+        funFact: "Switzerland has never been successfully invaded or conquered in its modern history. Its mountainous terrain and strong military traditions have helped maintain its independence.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "mystery-mix",
+        region: "global",
+        questionText: "Which country changes its name twice a year?",
+        hint: "This European nation switches between summer and winter names.",
+        answer: "none",
+        alternativeAnswers: ["no country", "trick question"],
+        funFact: "This was a trick question! No country actually changes its official name seasonally, though some places have different local names in different seasons.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "mystery-mix",
+        region: "global",
+        questionText: "Which country has the most pyramids?",
+        hint: "This African country has more pyramids than Egypt!",
+        answer: "sudan",
+        alternativeAnswers: [],
+        funFact: "Sudan has over 200 pyramids, more than Egypt! Most are located in three areas: Nuri, Naga, and Meroë, built by the ancient Kingdom of Kush.",
+        difficulty: 4,
         visualType: "text"
       }
     ];
