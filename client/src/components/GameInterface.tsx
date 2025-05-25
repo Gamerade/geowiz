@@ -292,7 +292,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !submitAnswerMutation.isPending && userAnswer.trim()) {
+                    if (e.key === 'Enter' && !submitAnswerMutation.isPending && !showFeedback && userAnswer.trim()) {
                       e.preventDefault();
                       handleSubmitAnswer();
                     }
