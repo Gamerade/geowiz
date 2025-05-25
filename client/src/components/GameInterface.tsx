@@ -79,9 +79,9 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
 
   const handleSubmitAnswer = () => {
     console.log('handleSubmitAnswer called!');
-    if (!currentQuestion || !userAnswer.trim() || submitAnswerMutation.isPending) return;
+    if (!currentQuestion || !userAnswer.trim()) return;
 
-    // Simple answer checking for immediate gameplay
+    // Immediate answer processing - no async delays
     const userAnswerLower = userAnswer.trim().toLowerCase();
     const correctAnswer = currentQuestion.answer.toLowerCase();
     const alternativeAnswers = currentQuestion.alternativeAnswers || [];
@@ -89,25 +89,36 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     const isCorrect = userAnswerLower === correctAnswer || 
                      alternativeAnswers.some(alt => alt.toLowerCase() === userAnswerLower);
 
-    const mockAnswer = {
+    const answerResult = {
       isCorrect,
-      question: currentQuestion, // Include the full question object
+      question: currentQuestion,
       scoreEarned: isCorrect ? 100 : 0,
       timeSpent: 60 - timeRemaining
     };
 
-    console.log('Setting feedback data:', mockAnswer);
-    console.log('Current showFeedback before:', showFeedback);
-    console.log('Current hasSubmitted before:', hasSubmitted);
+    console.log('Immediate answer result:', answerResult);
     
-    setLastAnswer(mockAnswer);
-    setShowFeedback(true);
-    setHasSubmitted(true); // ✅ Set this immediately for Enter key path
+    // Set all feedback state synchronously - no waiting!
+    setLastAnswer(answerResult);
+    setShowFeedback(true);  // ✅ Immediate feedback display
+    setHasSubmitted(true);  // ✅ Enable Enter to continue
     
-    console.log('Should show feedback now - hasSubmitted set to true');
+    console.log('Feedback state set immediately - should show now!');
     
     if (isCorrect) {
       updateScore(100);
+    }
+
+    // Optional: Save to API in background (fire and forget)
+    if (gameState.sessionId) {
+      apiRequest("POST", "/api/answers", {
+        sessionId: gameState.sessionId,
+        questionId: currentQuestion.id,
+        userAnswer,
+        timeSpent: 60 - timeRemaining,
+        isCorrect
+      }).then(res => console.log("Answer saved to API:", res))
+        .catch(err => console.log("API save failed (non-critical):", err));
     }
   };
 
