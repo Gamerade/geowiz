@@ -23,6 +23,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   const [showFeedback, setShowFeedback] = useState(false);
   const [lastAnswer, setLastAnswer] = useState<any>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const isInFeedbackMode = useRef(false);
   const goButtonRef = useRef<HTMLButtonElement>(null);
 
   // Fetch questions for current game - using direct values since state sync is broken
@@ -102,6 +103,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     setLastAnswer(answerResult);
     setShowFeedback(true);  // ✅ Immediate feedback display
     setHasSubmitted(true);  // ✅ Enable Enter to continue
+    isInFeedbackMode.current = true;  // ✅ Immediate ref for Enter key detection
     
     console.log('Feedback state set immediately - should show now!');
     console.log('showFeedback after setting:', showFeedback);
@@ -144,7 +146,24 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     }
   };
 
-  // Removed conflicting global Enter listener - now handled in input field only
+  // Global keyboard listener for Enter when feedback is showing
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && showFeedback && lastAnswer) {
+        e.preventDefault();
+        console.log('Global Enter: Calling handleContinue');
+        handleContinue();
+      }
+    };
+
+    if (showFeedback) {
+      document.addEventListener('keydown', handleGlobalKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleGlobalKeyDown);
+    };
+  }, [showFeedback, lastAnswer]);
 
   const handleSkipQuestion = () => {
     handleSubmitAnswer(); // Submit empty answer
@@ -318,22 +337,11 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                     value={userAnswer}
                     onChange={(e) => setUserAnswer(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === 'Enter' && !showFeedback) {
                         e.preventDefault();
-                        console.log('Enter key pressed!');
-                        console.log('showFeedback:', showFeedback);
-                        console.log('lastAnswer:', lastAnswer);
-                        console.log('hasSubmitted:', hasSubmitted);
-                        console.log('userAnswer:', userAnswer);
-
-                        if (showFeedback && lastAnswer) {
-                          console.log('Enter: Calling handleContinue');
-                          handleContinue();
-                        } else if (!showFeedback && userAnswer.trim()) {
-                          console.log('Enter: Calling handleSubmitAnswer');
+                        console.log('Input Enter: Calling handleSubmitAnswer');
+                        if (userAnswer.trim()) {
                           handleSubmitAnswer();
-                        } else {
-                          console.log('Enter: No action taken - conditions not met');
                         }
                       }
                     }}
@@ -404,12 +412,16 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                 <p className="text-base text-slate-700 leading-relaxed">{lastAnswer?.question?.funFact || 'No fun fact available'}</p>
               </div>
 
-              {/* Continue Instruction */}
+              {/* Continue Button */}
               <div className="text-center">
-                <p className="text-lg text-slate-600 mb-4">Press Enter to continue to the next question</p>
-                <div className="animate-pulse">
-                  <div className="w-16 h-1 bg-emerald-500 rounded mx-auto"></div>
-                </div>
+                <p className="text-lg text-slate-600 mb-4">Press Enter or click Next to continue</p>
+                <Button 
+                  onClick={handleContinue}
+                  size="lg"
+                  className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 text-lg font-semibold"
+                >
+                  Next Question →
+                </Button>
               </div>
             </div>
           </CardContent>
