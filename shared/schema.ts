@@ -1,12 +1,29 @@
-import { pgTable, text, serial, integer, boolean, timestamp, json } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, json, varchar, index } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-// User table for basic user data
+// Session storage table.
+// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+export const sessions = pgTable(
+  "sessions",
+  {
+    sid: varchar("sid").primaryKey(),
+    sess: json("sess").notNull(),
+    expire: timestamp("expire").notNull(),
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)],
+);
+
+// User storage table.
+// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+  id: varchar("id").primaryKey().notNull(),
+  email: varchar("email").unique(),
+  firstName: varchar("first_name"),
+  lastName: varchar("last_name"),
+  profileImageUrl: varchar("profile_image_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Game questions table
@@ -27,7 +44,7 @@ export const questions = pgTable("questions", {
 // Game sessions table
 export const gameSessions = pgTable("game_sessions", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
+  userId: varchar("user_id").references(() => users.id),
   mode: text("mode").notNull(),
   region: text("region").notNull(),
   score: integer("score").notNull().default(0),
@@ -54,13 +71,12 @@ export const gameAnswers = pgTable("game_answers", {
 // User achievements table
 export const achievements = pgTable("achievements", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").notNull().references(() => users.id),
+  userId: varchar("user_id").notNull().references(() => users.id),
   achievementType: text("achievement_type").notNull(), // 'flag_master', 'world_explorer', etc.
   unlockedAt: timestamp("unlocked_at").notNull().defaultNow(),
 });
 
 // Insert schemas
-export const insertUserSchema = createInsertSchema(users).omit({ id: true });
 export const insertQuestionSchema = createInsertSchema(questions).omit({ id: true });
 export const insertGameSessionSchema = createInsertSchema(gameSessions).omit({ 
   id: true, 
@@ -76,9 +92,9 @@ export const insertAchievementSchema = createInsertSchema(achievements).omit({
   unlockedAt: true 
 });
 
-// Types
+// User types for Replit Auth
+export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
-export type InsertUser = z.infer<typeof insertUserSchema>;
 
 export type Question = typeof questions.$inferSelect;
 export type InsertQuestion = z.infer<typeof insertQuestionSchema>;

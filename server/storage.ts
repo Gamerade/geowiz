@@ -1,11 +1,11 @@
-import { 
-  users, 
-  questions, 
-  gameSessions, 
-  gameAnswers, 
+import {
+  users,
+  questions,
+  gameSessions,
+  gameAnswers,
   achievements,
-  type User, 
-  type InsertUser,
+  type User,
+  type UpsertUser,
   type Question,
   type InsertQuestion,
   type GameSession,
@@ -17,12 +17,14 @@ import {
   type GameMode,
   type Region
 } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   // User operations
-  getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // (IMPORTANT) these user operations are mandatory for Replit Auth.
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
 
   // Question operations
   getQuestionsByMode(mode: GameMode, region: Region, limit?: number): Promise<Question[]>;
@@ -33,27 +35,165 @@ export interface IStorage {
   createGameSession(session: InsertGameSession): Promise<GameSession>;
   getGameSession(id: number): Promise<GameSession | undefined>;
   updateGameSession(id: number, updates: Partial<GameSession>): Promise<GameSession | undefined>;
-  getUserGameSessions(userId: number): Promise<GameSession[]>;
+  getUserGameSessions(userId: string): Promise<GameSession[]>;
 
   // Game answer operations
   createGameAnswer(answer: InsertGameAnswer): Promise<GameAnswer>;
   getSessionAnswers(sessionId: number): Promise<GameAnswer[]>;
 
   // Achievement operations
-  getUserAchievements(userId: number): Promise<Achievement[]>;
+  getUserAchievements(userId: string): Promise<Achievement[]>;
   createAchievement(achievement: InsertAchievement): Promise<Achievement>;
 
   // Leaderboard operations
   getLeaderboard(limit?: number): Promise<{ user: User; totalScore: number; rank: number }[]>;
 }
 
+export class DatabaseStorage implements IStorage {
+  // User operations
+  // (IMPORTANT) these user operations are mandatory for Replit Auth.
+
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return user;
+  }
+
+  // Question operations
+  async getQuestionsByMode(mode: GameMode, region: Region, limit: number = 10): Promise<Question[]> {
+    const questions = await db.select().from(questions);
+    const filteredQuestions = questions.filter(q => {
+      const modeMatch = q.mode === mode;
+      const regionMatch = region === "global" || q.region === region || q.region === "global";
+      return modeMatch && regionMatch;
+    });
+
+    // Shuffle and limit
+    const shuffled = filteredQuestions.sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, limit);
+  }
+
+  async getQuestion(id: number): Promise<Question | undefined> {
+    const [question] = await db.select().from(questions).where(eq(questions.id, id));
+    return question;
+  }
+
+  async createQuestion(insertQuestion: InsertQuestion): Promise<Question> {
+    const [question] = await db
+      .insert(questions)
+      .values(insertQuestion)
+      .returning();
+    return question;
+  }
+
+  // Game session operations
+  async createGameSession(insertSession: InsertGameSession): Promise<GameSession> {
+    const [session] = await db
+      .insert(gameSessions)
+      .values(insertSession)
+      .returning();
+    return session;
+  }
+
+  async getGameSession(id: number): Promise<GameSession | undefined> {
+    const [session] = await db.select().from(gameSessions).where(eq(gameSessions.id, id));
+    return session;
+  }
+
+  async updateGameSession(id: number, updates: Partial<GameSession>): Promise<GameSession | undefined> {
+    const [session] = await db
+      .update(gameSessions)
+      .set(updates)
+      .where(eq(gameSessions.id, id))
+      .returning();
+    return session;
+  }
+
+  async getUserGameSessions(userId: string): Promise<GameSession[]> {
+    return await db.select().from(gameSessions).where(eq(gameSessions.userId, userId));
+  }
+
+  // Game answer operations
+  async createGameAnswer(insertAnswer: InsertGameAnswer): Promise<GameAnswer> {
+    const [answer] = await db
+      .insert(gameAnswers)
+      .values(insertAnswer)
+      .returning();
+    return answer;
+  }
+
+  async getSessionAnswers(sessionId: number): Promise<GameAnswer[]> {
+    return await db.select().from(gameAnswers).where(eq(gameAnswers.sessionId, sessionId));
+  }
+
+  // Achievement operations
+  async getUserAchievements(userId: string): Promise<Achievement[]> {
+    return await db.select().from(achievements).where(eq(achievements.userId, userId));
+  }
+
+  async createAchievement(insertAchievement: InsertAchievement): Promise<Achievement> {
+    const [achievement] = await db
+      .insert(achievements)
+      .values(insertAchievement)
+      .returning();
+    return achievement;
+  }
+
+  // Leaderboard operations
+  async getLeaderboard(limit: number = 10): Promise<{ user: User; totalScore: number; rank: number }[]> {
+    // This would need a more complex SQL query in a real implementation
+    const sessions = await db.select().from(gameSessions);
+    const userScores = new Map<string, number>();
+    
+    // Calculate total scores for each user
+    for (const session of sessions) {
+      if (session.userId && session.isCompleted) {
+        const current = userScores.get(session.userId) || 0;
+        userScores.set(session.userId, current + session.score);
+      }
+    }
+
+    // Get users and create leaderboard
+    const allUsers = await db.select().from(users);
+    const leaderboard = Array.from(userScores.entries())
+      .map(([userId, totalScore]) => ({
+        user: allUsers.find(u => u.id === userId)!,
+        totalScore,
+        rank: 0
+      }))
+      .filter(entry => entry.user) // Remove entries where user doesn't exist
+      .sort((a, b) => b.totalScore - a.totalScore)
+      .slice(0, limit);
+
+    // Assign ranks
+    leaderboard.forEach((entry, index) => {
+      entry.rank = index + 1;
+    });
+
+    return leaderboard;
+  }
+}
+
 export class MemStorage implements IStorage {
-  private users: Map<number, User>;
+  private users: Map<string, User>;
   private questions: Map<number, Question>;
   private gameSessions: Map<number, GameSession>;
   private gameAnswers: Map<number, GameAnswer>;
   private achievements: Map<number, Achievement>;
-  private currentUserId: number;
   private currentQuestionId: number;
   private currentSessionId: number;
   private currentAnswerId: number;
@@ -65,7 +205,6 @@ export class MemStorage implements IStorage {
     this.gameSessions = new Map();
     this.gameAnswers = new Map();
     this.achievements = new Map();
-    this.currentUserId = 1;
     this.currentQuestionId = 1;
     this.currentSessionId = 1;
     this.currentAnswerId = 1;
@@ -329,4 +468,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
