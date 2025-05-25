@@ -11,6 +11,7 @@ import { X, Flag, Map, Mic, Clock, Trophy, Target, Zap, Percent } from "lucide-r
 import { getRankTitle } from "@/lib/gameData";
 import type { Question } from "@shared/schema";
 import GameResults from "@/components/GameResults";
+import SuccessAnimation from "@/components/SuccessAnimation";
 
 interface GameInterfaceProps {
   onBackToMenu: () => void;
@@ -25,6 +26,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   const [lastAnswer, setLastAnswer] = useState<any>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
   const isInFeedbackMode = useRef(false);
   const goButtonRef = useRef<HTMLButtonElement>(null);
 

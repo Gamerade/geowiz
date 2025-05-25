@@ -18,7 +18,7 @@ export default function Landing() {
                 <Globe className="text-white text-lg" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-slate-900">Geography Wizard</h1>
+                <h1 className="text-xl font-bold text-slate-900">GeoWiz</h1>
                 <p className="text-sm text-slate-500">Ultimate Geography Challenge</p>
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function Landing() {
               Ready to Test Your Geography Knowledge?
             </h3>
             <p className="text-lg text-slate-600 mb-6">
-              Join thousands of geography enthusiasts and start your journey to become a Geography Wizard!
+              Join thousands of geography enthusiasts and start your journey to become a GeoWiz master!
             </p>
             <Button 
               onClick={handleLogin}

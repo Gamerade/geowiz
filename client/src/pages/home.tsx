@@ -55,7 +55,7 @@ export default function Home() {
                 <Globe className="text-white text-lg" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-slate-900">Geography Wizard</h1>
+                <h1 className="text-xl font-bold text-slate-900">GeoWiz</h1>
                 <p className="text-sm text-slate-500">Ultimate Geography Challenge</p>
               </div>
             </div>
