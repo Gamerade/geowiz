@@ -374,7 +374,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                   <Zap className="text-amber-500 mr-2 w-4 h-4" />
                   Did you know?
                 </h4>
-                <p className="text-sm text-slate-600">{lastAnswer.question.funFact}</p>
+                <p className="text-sm text-slate-600">{lastAnswer.funFact}</p>
               </div>
 
               <Button onClick={handleContinue} className="w-full">
