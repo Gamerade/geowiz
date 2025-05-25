@@ -276,7 +276,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                     }
                   }}
                   className="text-6xl py-8 pr-32 font-bold leading-tight"
-                  style={{ fontSize: '4rem', lineHeight: '1.1' }}
+                  style={{ fontSize: '54px', lineHeight: '1.1' }}
                   disabled={submitAnswerMutation.isPending || showFeedback}
                 />
                 <Button
