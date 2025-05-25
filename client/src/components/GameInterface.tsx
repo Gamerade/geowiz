@@ -298,9 +298,13 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
                   onKeyDown={(e) => {
+                    console.log('Key pressed:', e.key, 'userAnswer:', userAnswer, 'showFeedback:', showFeedback);
                     if (e.key === 'Enter' && userAnswer.trim() && !showFeedback) {
+                      console.log('Enter key conditions met, calling handleSubmitAnswer');
                       e.preventDefault();
                       handleSubmitAnswer();
+                    } else if (e.key === 'Enter') {
+                      console.log('Enter key pressed but conditions not met');
                     }
                   }}
                   className="text-6xl py-8 pr-32 font-bold leading-tight placeholder:text-lg placeholder:text-slate-400"
