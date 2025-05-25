@@ -60,10 +60,12 @@ export function useGameState() {
   });
 
   const setSelectedMode = useCallback((mode: GameMode) => {
+    console.log('useGameState: Setting mode to:', mode);
     setGameState(prev => ({ ...prev, selectedMode: mode }));
   }, []);
 
   const setSelectedRegion = useCallback((region: Region) => {
+    console.log('useGameState: Setting region to:', region);
     setGameState(prev => ({ ...prev, selectedRegion: region }));
   }, []);
 
