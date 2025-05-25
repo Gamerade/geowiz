@@ -7,9 +7,11 @@ import RegionSelector from "@/components/RegionSelector";
 import GameInterface from "@/components/GameInterface";
 import FeedbackModal from "@/components/FeedbackModal";
 import { useGameState } from "@/hooks/useGameState";
-import { Trophy, Star, Globe, MapPin, Flag, Clock, Flame, Crown } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { Trophy, Star, Globe, MapPin, Flag, Clock, Flame, Crown, LogOut, User } from "lucide-react";
 
 export default function Home() {
+  const { user } = useAuth();
   const { gameState, startGame, resetGame } = useGameState();
   const [currentSection, setCurrentSection] = useState<'welcome' | 'modes' | 'regions' | 'game'>('welcome');
 
@@ -56,6 +58,22 @@ export default function Home() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              {user && (
+                <div className="hidden sm:flex items-center space-x-3">
+                  {user.profileImageUrl && (
+                    <img 
+                      src={user.profileImageUrl} 
+                      alt="Profile" 
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  )}
+                  <div className="text-sm">
+                    <p className="font-medium text-slate-900">
+                      {user.firstName || user.email}
+                    </p>
+                  </div>
+                </div>
+              )}
               <div className="hidden sm:flex items-center space-x-2 bg-slate-100 rounded-lg px-3 py-2">
                 <Trophy className="text-amber-500 w-4 h-4" />
                 <span className="text-sm font-medium text-slate-700">Score: {gameState.score}</span>
@@ -64,6 +82,14 @@ export default function Home() {
                 <Star className="text-emerald-500 w-4 h-4" />
                 <span className="text-sm font-medium text-slate-700">{getRankTitle(gameState.score)}</span>
               </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => window.location.href = '/api/logout'}
+                className="text-slate-500 hover:text-red-600"
+              >
+                <LogOut className="w-4 h-4" />
+              </Button>
             </div>
           </div>
         </div>
