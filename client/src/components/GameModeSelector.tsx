@@ -36,6 +36,7 @@ export default function GameModeSelector({ onModeSelect }: GameModeSelectorProps
   };
 
   const handleModeSelect = (mode: any) => {
+    console.log('Mode selected:', mode.id);
     setSelectedMode(mode.id);
     onModeSelect(mode.id);
   };
