@@ -23,10 +23,14 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   const [lastAnswer, setLastAnswer] = useState<any>(null);
 
   // Fetch questions for current game
-  const { data: questions, isLoading } = useQuery({
+  const { data: questions, isLoading, error } = useQuery({
     queryKey: [`/api/questions/${gameState.selectedMode}/${gameState.selectedRegion}`],
     enabled: !!(gameState.selectedMode && gameState.selectedRegion)
   });
+
+  console.log('Questions data:', questions);
+  console.log('Loading state:', isLoading);
+  console.log('Error:', error);
 
   // Submit answer mutation
   const submitAnswerMutation = useMutation({
