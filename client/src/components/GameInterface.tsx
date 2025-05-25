@@ -306,7 +306,8 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                         // Continue to next question if showing feedback
                         handleContinue();
                       } else if (userAnswer.trim() && !showFeedback) {
-                        // Submit answer if we have an answer and not showing feedback
+                        // Call the exact same function as GO button
+                        console.log('Enter key pressed - calling same function as GO button');
                         handleSubmitAnswer();
                       }
                     }
