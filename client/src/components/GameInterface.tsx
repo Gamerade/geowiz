@@ -22,6 +22,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   const [timeRemaining, setTimeRemaining] = useState(60);
   const [showFeedback, setShowFeedback] = useState(false);
   const [lastAnswer, setLastAnswer] = useState<any>(null);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const goButtonRef = useRef<HTMLButtonElement>(null);
 
   // Fetch questions for current game - using direct values since state sync is broken
@@ -47,6 +48,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     onSuccess: (data) => {
       setLastAnswer(data);
       setShowFeedback(true);
+      setHasSubmitted(true); // ✅ This unlocks Enter-to-continue
       updateScore(data.scoreEarned || 0);
       if (data.isCorrect) {
         incrementQuestion();
@@ -70,6 +72,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     setUserAnswer("");
     setShowFeedback(false);
     setLastAnswer(null);
+    setHasSubmitted(false);
   }, [currentQuestionIndex]);
 
   const currentQuestion: Question | undefined = questions?.[currentQuestionIndex];
@@ -109,6 +112,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     setShowFeedback(false);
     setLastAnswer(null);
     setUserAnswer(''); // Clear the input for next question
+    setHasSubmitted(false); // ✅ Reset for the next question
     
     // Always increment question when continuing
     incrementQuestion();
@@ -316,8 +320,11 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
-                        if (!showFeedback && goButtonRef.current) {
-                          goButtonRef.current.click(); // Simulate GO button click
+
+                        if (showFeedback && lastAnswer && hasSubmitted) {
+                          handleContinue();
+                        } else if (!showFeedback && userAnswer.trim() && !submitAnswerMutation.isPending) {
+                          handleSubmitAnswer(); // skip goButtonRef, call the real logic
                         }
                       }
                     }}
