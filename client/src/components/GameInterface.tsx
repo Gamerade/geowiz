@@ -149,7 +149,8 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
   // Global keyboard listener for Enter when feedback is showing
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && showFeedback && lastAnswer) {
+      // Only handle if the target is not the input field
+      if (e.key === 'Enter' && showFeedback && lastAnswer && e.target !== document.querySelector('input[type="text"]')) {
         e.preventDefault();
         console.log('Global Enter: Calling handleContinue');
         handleContinue();
