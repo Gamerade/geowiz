@@ -213,6 +213,23 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     );
   }
 
+  // Show results screen when game is complete
+  if (showResults) {
+    return (
+      <GameResults
+        score={gameState.score}
+        questionsAnswered={gameState.questionsAnswered}
+        correctAnswers={gameState.correctAnswers}
+        currentStreak={gameState.currentStreak}
+        maxStreak={gameState.maxStreak}
+        gameMode="mispronounced-capitals"
+        region="global"
+        onPlayAgain={handlePlayAgain}
+        onBackToMenu={handleBackToMenu}
+      />
+    );
+  }
+
   if (!currentQuestion) {
     return (
       <div className="flex justify-center items-center min-h-screen">
