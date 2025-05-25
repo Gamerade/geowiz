@@ -116,6 +116,8 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     
     if (isCorrect) {
       updateScore(100);
+      // Trigger success animation for correct answers
+      setShowSuccessAnimation(true);
     }
 
     // Optional: Save to API in background (fire and forget)
@@ -136,6 +138,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     setLastAnswer(null);
     setUserAnswer(''); // Clear the input for next question
     setHasSubmitted(false); // ✅ Reset for the next question
+    setShowSuccessAnimation(false); // Reset success animation
     
     // Always increment question when continuing
     incrementQuestion();
@@ -493,6 +496,12 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
           </CardContent>
         </Card>
       </div>
+
+      {/* Success Animation */}
+      <SuccessAnimation 
+        isVisible={showSuccessAnimation} 
+        onComplete={() => setShowSuccessAnimation(false)} 
+      />
     </div>
   );
 }
