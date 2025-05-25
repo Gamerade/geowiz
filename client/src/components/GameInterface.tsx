@@ -118,18 +118,17 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && showFeedback) {
         e.preventDefault();
+        e.stopPropagation();
         handleContinue();
       }
     };
 
-    if (showFeedback) {
-      document.addEventListener('keydown', handleKeyDown);
-    }
+    document.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [showFeedback]);;
+  }, [showFeedback, handleContinue]);
 
   const handleSkipQuestion = () => {
     handleSubmitAnswer(); // Submit empty answer
