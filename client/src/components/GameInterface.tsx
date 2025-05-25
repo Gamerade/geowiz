@@ -122,16 +122,30 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
       if (e.key === 'Enter' && showFeedback) {
         e.preventDefault();
         e.stopPropagation();
-        handleContinue();
+        // Call continue logic directly here instead of through function
+        setShowFeedback(false);
+        setLastAnswer(null);
+        setUserAnswer('');
+        incrementQuestion();
+        
+        if (currentQuestionIndex >= (questions?.length || 0) - 1) {
+          completeGame();
+          onBackToMenu();
+        } else {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+          setCurrentQuestion(currentQuestionIndex + 1);
+        }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    if (showFeedback) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [showFeedback, handleContinue]);
+  }, [showFeedback, currentQuestionIndex, questions?.length]);
 
   const handleSkipQuestion = () => {
     handleSubmitAnswer(); // Submit empty answer
