@@ -337,7 +337,17 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    sampleQuestions.forEach(q => this.createQuestion(q));
+    sampleQuestions.forEach(q => {
+      const question: Question = { 
+        ...q, 
+        id: this.currentQuestionId++,
+        hint: q.hint || null,
+        alternativeAnswers: q.alternativeAnswers || null,
+        visualType: q.visualType || null,
+        visualUrl: q.visualUrl || null
+      };
+      this.questions.set(question.id, question);
+    });
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -356,12 +366,19 @@ export class MemStorage implements IStorage {
   }
 
   async getQuestionsByMode(mode: GameMode, region: Region, limit: number = 10): Promise<Question[]> {
+    console.log(`Looking for questions: mode=${mode}, region=${region}`);
+    console.log(`Total questions available: ${this.questions.size}`);
+    console.log(`Available modes:`, Array.from(this.questions.values()).map(q => q.mode));
+    
     const filteredQuestions = Array.from(this.questions.values()).filter(q => {
       const modeMatch = q.mode === mode;
       const regionMatch = region === "global" || q.region === region || q.region === "global";
+      console.log(`Question ${q.id}: mode=${q.mode}, region=${q.region}, modeMatch=${modeMatch}, regionMatch=${regionMatch}`);
       return modeMatch && regionMatch;
     });
 
+    console.log(`Filtered questions found: ${filteredQuestions.length}`);
+    
     // Shuffle and limit
     const shuffled = filteredQuestions.sort(() => Math.random() - 0.5);
     return shuffled.slice(0, limit);
