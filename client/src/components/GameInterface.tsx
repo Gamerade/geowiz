@@ -313,7 +313,7 @@ export default function GameInterface({ onBackToMenu }: GameInterfaceProps) {
                   }}
                   className="text-6xl py-8 pr-32 font-bold leading-tight placeholder:text-lg placeholder:text-slate-400"
                   style={{ fontSize: '48px', lineHeight: '1.1' }}
-                  disabled={submitAnswerMutation.isPending || showFeedback}
+                  disabled={submitAnswerMutation.isPending}
                 />
                 <Button
                   onClick={() => {
