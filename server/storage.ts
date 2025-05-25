@@ -216,6 +216,117 @@ export class MemStorage implements IStorage {
 
   private initializeSampleQuestions() {
     const sampleQuestions: InsertQuestion[] = [
+      // Standard Capitals (10 questions)
+      {
+        mode: "capitals",
+        region: "global",
+        questionText: "What is the capital of Australia?",
+        hint: "This city is located in the Australian Capital Territory.",
+        answer: "canberra",
+        alternativeAnswers: [],
+        funFact: "Canberra was specifically designed and built to be Australia's capital city, chosen as a compromise between Sydney and Melbourne.",
+        difficulty: 2,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "global",
+        questionText: "What is the capital of Brazil?",
+        hint: "This planned city was built in the 1950s in the country's interior.",
+        answer: "brasilia",
+        alternativeAnswers: ["brasília"],
+        funFact: "Brasília was designed by architect Oscar Niemeyer and urban planner Lúcio Costa, and was built in just 41 months!",
+        difficulty: 2,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "global",
+        questionText: "What is the capital of Canada?",
+        hint: "This city is located in Ontario, on the border with Quebec.",
+        answer: "ottawa",
+        alternativeAnswers: [],
+        funFact: "Ottawa was chosen as Canada's capital by Queen Victoria in 1857, partly because it was less likely to be attacked by the United States!",
+        difficulty: 1,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "global",
+        questionText: "What is the capital of Japan?",
+        hint: "This city was formerly known as Edo.",
+        answer: "tokyo",
+        alternativeAnswers: ["tōkyō"],
+        funFact: "Tokyo became Japan's capital in 1868 when Emperor Meiji moved from Kyoto. The name means 'Eastern Capital.'",
+        difficulty: 1,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "global",
+        questionText: "What is the capital of South Korea?",
+        hint: "This city has been the capital for over 600 years.",
+        answer: "seoul",
+        alternativeAnswers: [],
+        funFact: "Seoul has been South Korea's capital for over 600 years and is home to nearly 10 million people, making it one of the world's largest cities.",
+        difficulty: 1,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "global",
+        questionText: "What is the capital of Morocco?",
+        hint: "This coastal city is known for its red walls and historic medina.",
+        answer: "rabat",
+        alternativeAnswers: [],
+        funFact: "Rabat became Morocco's capital in 1912. Many people think it's Casablanca or Marrakech, but this quieter city has been the political center for over a century.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "global",
+        questionText: "What is the capital of New Zealand?",
+        hint: "This city is located on the North Island and is known for its harbor.",
+        answer: "wellington",
+        alternativeAnswers: [],
+        funFact: "Wellington is one of the windiest cities in the world and is often called the 'Windy City.' It's also the southernmost capital city in the world.",
+        difficulty: 2,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "global",
+        questionText: "What is the capital of Kazakhstan?",
+        hint: "This city was renamed in 2019 to honor the former president.",
+        answer: "nur-sultan",
+        alternativeAnswers: ["nursultan", "astana"],
+        funFact: "The capital was moved from Almaty to Astana in 1997, then renamed Nur-Sultan in 2019. It's one of the newest capital cities in the world.",
+        difficulty: 4,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "global",
+        questionText: "What is the capital of Nigeria?",
+        hint: "This planned city replaced Lagos as the capital in 1991.",
+        answer: "abuja",
+        alternativeAnswers: [],
+        funFact: "Abuja was chosen as Nigeria's capital because of its central location and was specifically designed to be ethnically neutral for the diverse country.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "global",
+        questionText: "What is the capital of Myanmar?",
+        hint: "This city replaced Yangon as the capital in 2006.",
+        answer: "naypyidaw",
+        alternativeAnswers: ["nay pyi taw"],
+        funFact: "Naypyidaw was built from scratch starting in 2002 and became Myanmar's capital in 2006. It's known for its wide, empty streets and government buildings.",
+        difficulty: 4,
+        visualType: "text"
+      },
       // Mispronounced Capitals (10 questions)
       {
         mode: "mispronounced-capitals",

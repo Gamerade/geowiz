@@ -24,6 +24,17 @@ export interface RegionInfo {
 
 export const gameModes: GameModeInfo[] = [
   {
+    id: "capitals",
+    title: "Capital Cities",
+    description: "Test your knowledge of world capitals",
+    difficulty: "Easy",
+    difficultyStars: 1,
+    icon: "fas fa-city",
+    color: "from-blue-500 to-indigo-600",
+    badge: "Perfect Start",
+    badgeColor: "bg-blue-100 text-blue-800"
+  },
+  {
     id: "mispronounced-capitals",
     title: "Mispronounced Capitals",
     description: "Test your knowledge on capitals people often say wrong",

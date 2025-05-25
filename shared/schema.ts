@@ -110,6 +110,7 @@ export type InsertAchievement = z.infer<typeof insertAchievementSchema>;
 
 // Game mode and region enums
 export const GameModes = [
+  "capitals",
   "mispronounced-capitals",
   "multiple-capitals", 
   "hidden-outlines",
