@@ -29,6 +29,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
+  const [correctAnswerAnimation, setCorrectAnswerAnimation] = useState(false);
   const [useAIQuestions, setUseAIQuestions] = useState(false);
   const [aiQuestions, setAiQuestions] = useState<any[]>([]);
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
@@ -163,6 +164,12 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     setShowFeedback(true);  // ✅ Immediate feedback display
     setHasSubmitted(true);  // ✅ Enable Enter to continue
     isInFeedbackMode.current = true;  // ✅ Immediate ref for Enter key detection
+    
+    // Trigger satisfying green animation for correct answers
+    if (isCorrect) {
+      setCorrectAnswerAnimation(true);
+      setTimeout(() => setCorrectAnswerAnimation(false), 1500); // Reset after animation
+    }
     
     console.log('Feedback state set immediately - should show now!');
     console.log('showFeedback after setting:', showFeedback);
@@ -405,7 +412,11 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
       {/* Main Game Content - Question or Feedback */}
       {!showFeedback ? (
         /* Question Card */
-        <Card className="mb-6">
+        <Card className={`mb-6 transition-all duration-1000 ${
+          correctAnswerAnimation 
+            ? 'bg-green-100 border-green-300 shadow-green-200 shadow-xl scale-105' 
+            : ''
+        }`}>
           <CardContent className="p-8">
             <div className="max-w-4xl mx-auto">
               {/* Question Type Badge */}
