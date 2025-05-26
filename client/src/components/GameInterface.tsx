@@ -168,7 +168,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     // Trigger satisfying green animation for correct answers
     if (isCorrect) {
       setCorrectAnswerAnimation(true);
-      setTimeout(() => setCorrectAnswerAnimation(false), 1500); // Reset after animation
+      setTimeout(() => setCorrectAnswerAnimation(false), 900); // Reset 40% faster (was 1500ms, now 900ms)
     }
     
     console.log('Feedback state set immediately - should show now!');
@@ -579,9 +579,9 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
 
       {/* Quick Stats */}
       <div className="grid md:grid-cols-4 gap-4">
-        <Card className={`transition-all duration-1000 ${
+        <Card className={`transition-all duration-600 ${
           correctAnswerAnimation 
-            ? 'bg-green-200 border-green-400 shadow-green-300 shadow-2xl scale-110 opacity-70' 
+            ? 'bg-green-300 border-green-500 shadow-green-400 shadow-2xl scale-110 opacity-90' 
             : ''
         }`}>
           <CardContent className="p-4 text-center">
