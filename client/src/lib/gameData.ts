@@ -108,7 +108,7 @@ export const regions: RegionInfo[] = [
     name: "Global Challenge",
     description: "All countries worldwide",
     countryCount: 195,
-    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjMzMzRkY4Ii8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjEyNSIgcj0iMTAwIiBmaWxsPSIjNjY3MEZGIiBmaWxsLW9wYWNpdHk9IjAuMyIvPgo8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxMjUiIHI9IjcwIiBmaWxsPSIjNjY3MEZGIiBmaWxsLW9wYWNpdHk9IjAuNSIvPgo8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxMjUiIHI9IjQwIiBmaWxsPSIjNjY3MEZGIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTM1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSJib2xkIj5HTE9CQUw8L3RleHQ+Cjwvc3ZnPgo=",
+    image: "data:image/svg+xml,%3Csvg width='400' height='250' viewBox='0 0 400 250' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='400' height='250' fill='%233338FF'/%3E%3Cellipse cx='200' cy='125' rx='150' ry='80' fill='%2322C55E' fill-opacity='0.8'/%3E%3Cellipse cx='120' cy='90' rx='60' ry='35' fill='%2316A34A'/%3E%3Cellipse cx='280' cy='110' rx='70' ry='40' fill='%2316A34A'/%3E%3Cellipse cx='200' cy='160' rx='80' ry='45' fill='%2316A34A'/%3E%3Ctext x='200' y='135' text-anchor='middle' fill='white' font-family='sans-serif' font-size='18' font-weight='bold'%3EGLOBAL%3C/text%3E%3C/svg%3E",
     badge: "Ultimate",
     badgeColor: "bg-primary text-white"
   },
@@ -135,7 +135,7 @@ export const regions: RegionInfo[] = [
     name: "Africa",
     description: "Diverse nations and cultures", 
     countryCount: 54,
-    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjMTZBMzRBIi8+CjxwYXRoIGQ9Ik0xODAsMzBDMjEwLDQwIDI0MCw3MCAyNTAsOTBDMjU1LDEyMCAyNTAsMTUwIDI0MCwxODBDMjMwLDIwMCAyMDAsMjEwIDE3MCwyMDBDMTQwLDE5MCAxMjAsMTcwIDExMCwxNDVDMTA1LDEyMCAxMTAsMTAwIDEzMCw4MEMxNTAsNjAgMTcwLDQwIDE4MCwzMFoiIGZpbGw9IiMyMkM1NUIiLz4KPHA+dGggZD0iTTE5MCw2MEMyMTUsNjUgMjMwLDgwIDIzNSwxMDBDMjM4LDEyMCAyMzUsMTQwIDIyNSwxNjBDMjEwLDE3NSAxODUsMTgwIDE2MCwxNzBDMTQwLDE2MCAxMjUsMTQ1IDEyNSwxMjVDMTI1LDEwNSAxNDAsMTAwIDE2MCw4NUMxNzUsNzUgMTg1LDY1IDE5MCw2MFoiIGZpbGw9IiMxNkE5NEEiLz4KPHA+dGV4dCB4PSIyMDAiIHk9IjE0NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iYm9sZCI+QUZSSUNBPC90ZXh0Pgo8L3N2Zz4K",
+    image: "data:image/svg+xml,%3Csvg width='400' height='250' viewBox='0 0 400 250' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='400' height='250' fill='%2316A34A'/%3E%3Cpath d='M200 40 C220 50 240 70 250 90 C255 120 250 150 240 180 C230 200 200 210 170 200 C140 190 120 170 110 145 C105 120 110 100 130 80 C150 60 170 40 200 40 Z' fill='%2322C55E'/%3E%3Cpath d='M190 60 C215 65 230 80 235 100 C238 120 235 140 225 160 C210 175 185 180 160 170 C140 160 125 145 125 125 C125 105 140 100 160 85 C175 75 185 65 190 60 Z' fill='%23059669'/%3E%3Ctext x='200' y='145' text-anchor='middle' fill='white' font-family='sans-serif' font-size='18' font-weight='bold'%3EAFRICA%3C/text%3E%3C/svg%3E",
     badge: "Diverse",
     badgeColor: "bg-green-500 text-white"
   },
