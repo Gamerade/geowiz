@@ -198,7 +198,12 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     // Always increment question when continuing
     incrementQuestion();
     
-    if (currentQuestionIndex >= questionsToUse.length - 1) {
+    // Ensure minimum 3 questions for proper testing
+    const minQuestions = 3;
+    const hasEnoughQuestions = currentQuestionIndex >= minQuestions - 1;
+    const isLastQuestion = currentQuestionIndex >= questionsToUse.length - 1;
+    
+    if (hasEnoughQuestions && isLastQuestion) {
       // Game complete - show results screen
       completeGame();
       setShowResults(true);
