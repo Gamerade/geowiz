@@ -33,13 +33,13 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
   const [useAIQuestions, setUseAIQuestions] = useState(false);
   const [aiQuestions, setAiQuestions] = useState<any[]>([]);
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const isInFeedbackMode = useRef(false);
   const goButtonRef = useRef<HTMLButtonElement>(null);
 
   // Use props first, then game state, then fallback
   const modeToUse = selectedMode || gameState.selectedMode || 'capitals';
   const regionToUse = selectedRegion || gameState.selectedRegion || 'global';
-
+  
   const { data: questions, isLoading, error } = useQuery({
     queryKey: [`/api/questions/${modeToUse}/${regionToUse}`],
     enabled: true
@@ -48,7 +48,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
   // Generate one AI question at a time to save costs
   const generateNextAIQuestion = async () => {
     if (isGeneratingAI) return;
-
+    
     setIsGeneratingAI(true);
     try {
       const response = await apiRequest("POST", "/api/ai/generate-question", {
@@ -57,7 +57,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
         difficulty: Math.floor(Math.random() * 3) + 2, // Difficulty 2-4
         previousQuestions: aiQuestions.map(q => q.questionText)
       });
-
+      
       const aiQuestion = await response.json();
       const newQuestion = {
         id: Date.now(), // Unique ID for AI questions
@@ -72,7 +72,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
         visualType: "text",
         visualUrl: null
       };
-
+      
       setAiQuestions(prev => [...prev, newQuestion]);
     } catch (error) {
       console.error("Failed to generate AI question:", error);
@@ -92,6 +92,14 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     }
   }, [useAIQuestions, currentQuestionIndex, aiQuestions.length]);
 
+  console.log('Game state:', gameState);
+  console.log('Mode being used:', modeToUse);
+  console.log('Region being used:', regionToUse);
+  console.log('Use AI Questions:', useAIQuestions);
+  console.log('Questions data:', questionsToUse);
+  console.log('Loading state:', isLoading || isGeneratingAI);
+  console.log('Error:', error);
+
   // Submit answer mutation
   const submitAnswerMutation = useMutation({
     mutationFn: async (answerData: { sessionId: number; questionId: number; userAnswer: string; timeSpent: number }) => {
@@ -101,7 +109,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     onSuccess: (data) => {
       setLastAnswer(data);
       setShowFeedback(true);
-      setHasSubmitted(true);
+      setHasSubmitted(true); // ✅ This unlocks Enter-to-continue
       updateScore(data.scoreEarned || 0);
       if (data.isCorrect) {
         incrementQuestion();
@@ -126,20 +134,19 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     setShowFeedback(false);
     setLastAnswer(null);
     setHasSubmitted(false);
-    // Focus input when new question appears
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100);
   }, [currentQuestionIndex]);
 
-  const handleSubmitAnswer = () => {
-    if (!currentQuestion || !userAnswer.trim() || showFeedback) return;
+  // Remove duplicate currentQuestion declaration - it's already defined above
 
-    // Immediate answer processing
+  const handleSubmitAnswer = () => {
+    console.log('handleSubmitAnswer called!');
+    if (!currentQuestion || !userAnswer.trim()) return;
+
+    // Immediate answer processing - no async delays
     const userAnswerLower = userAnswer.trim().toLowerCase();
     const correctAnswer = currentQuestion.answer.toLowerCase();
     const alternativeAnswers = currentQuestion.alternativeAnswers || [];
-
+    
     const isCorrect = userAnswerLower === correctAnswer || 
                      alternativeAnswers.some((alt: string) => alt.toLowerCase() === userAnswerLower);
 
@@ -150,20 +157,32 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
       timeSpent: 60 - timeRemaining
     };
 
-    // Set all feedback state synchronously
+    console.log('Immediate answer result:', answerResult);
+    
+    // Set all feedback state synchronously - no waiting!
     setLastAnswer(answerResult);
-    setShowFeedback(true);
-    setHasSubmitted(true);
-
+    setShowFeedback(true);  // ✅ Immediate feedback display
+    setHasSubmitted(true);  // ✅ Enable Enter to continue
+    isInFeedbackMode.current = true;  // ✅ Immediate ref for Enter key detection
+    
     // Trigger satisfying green animation for correct answers
     if (isCorrect) {
       setCorrectAnswerAnimation(true);
-      setTimeout(() => setCorrectAnswerAnimation(false), 900);
-      setShowSuccessAnimation(true);
+      setTimeout(() => setCorrectAnswerAnimation(false), 900); // Reset 40% faster (was 1500ms, now 900ms)
+    }
+    
+    console.log('Feedback state set immediately - should show now!');
+    console.log('showFeedback after setting:', showFeedback);
+    console.log('lastAnswer after setting:', answerResult);
+    console.log('hasSubmitted after setting:', hasSubmitted);
+    
+    if (isCorrect) {
       updateScore(100);
+      // Trigger success animation for correct answers
+      setShowSuccessAnimation(true);
     }
 
-    // Optional: Save to API in background
+    // Optional: Save to API in background (fire and forget)
     if (gameState.sessionId) {
       apiRequest("POST", "/api/answers", {
         sessionId: gameState.sessionId,
@@ -171,24 +190,28 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
         userAnswer,
         timeSpent: 60 - timeRemaining,
         isCorrect
-      }).catch(err => console.log("API save failed (non-critical):", err));
+      }).then(res => console.log("Answer saved to API:", res))
+        .catch(err => console.log("API save failed (non-critical):", err));
     }
   };
 
   const handleContinue = () => {
     setShowFeedback(false);
     setLastAnswer(null);
-    setUserAnswer('');
-    setHasSubmitted(false);
-    setShowSuccessAnimation(false);
-
+    setUserAnswer(''); // Clear the input for next question
+    setHasSubmitted(false); // ✅ Reset for the next question
+    setShowSuccessAnimation(false); // Reset success animation
+    
+    // Always increment question when continuing
     incrementQuestion();
-
+    
+    // Ensure minimum 3 questions for proper testing
     const minQuestions = 3;
     const hasEnoughQuestions = currentQuestionIndex >= minQuestions - 1;
     const isLastQuestion = currentQuestionIndex >= questionsToUse.length - 1;
-
+    
     if (hasEnoughQuestions && isLastQuestion) {
+      // Game complete - show results screen
       completeGame();
       setShowResults(true);
     } else {
@@ -197,36 +220,32 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     }
   };
 
-  // Single unified keyboard handler
+  // Global Enter key handler for both submitting answers and continuing
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Only handle Enter key
-      if (e.key !== 'Enter') return;
-
-      // Prevent default form submission
-      e.preventDefault();
-
-      // Check if we're in feedback mode
-      if (showFeedback) {
-        handleContinue();
-      } else if (userAnswer.trim() && !hasSubmitted) {
-        handleSubmitAnswer();
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        
+        if (showFeedback && lastAnswer) {
+          // After feedback is shown, Enter continues to next question
+          handleContinue();
+        } else if (!showFeedback && userAnswer.trim()) {
+          // During question, Enter submits the answer (same as GO button)
+          handleSubmitAnswer();
+        }
       }
     };
 
-    // Add listener to window to catch all Enter presses
     window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [showFeedback, userAnswer, hasSubmitted]); // Important: Include all dependencies
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showFeedback, lastAnswer, userAnswer]);
 
   const handleSkipQuestion = () => {
-    handleSubmitAnswer();
+    handleSubmitAnswer(); // Submit empty answer
   };
 
   const handlePlayAgain = () => {
+    // Reset all game state and start over with same mode/region
     setShowResults(false);
     setCurrentQuestionIndex(0);
     setCurrentQuestion(0);
@@ -284,6 +303,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     );
   }
 
+  // Show results screen when game is complete
   if (showResults) {
     return (
       <GameResults
@@ -446,18 +466,36 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
               <div className="max-w-2xl mx-auto">
                 <div className="relative">
                   <Input
-                    ref={inputRef}
                     type="text"
                     placeholder="Type answer..."
                     value={userAnswer}
                     onChange={(e) => setUserAnswer(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        console.log('Enter key pressed!');
+                        console.log('showFeedback:', showFeedback);
+                        console.log('lastAnswer:', lastAnswer);
+                        
+                        if (showFeedback && lastAnswer) {
+                          console.log('Enter: Calling handleContinue');
+                          handleContinue();
+                        } else if (!showFeedback && userAnswer.trim()) {
+                          console.log('Enter: Calling handleSubmitAnswer');
+                          handleSubmitAnswer();
+                        }
+                      }
+                    }}
                     className="text-6xl py-8 pr-32 font-bold leading-tight placeholder:text-lg placeholder:text-slate-400"
                     style={{ fontSize: '48px', lineHeight: '1.1' }}
-                    disabled={submitAnswerMutation.isPending || showFeedback}
+                    disabled={submitAnswerMutation.isPending}
                   />
                   <Button
                     ref={goButtonRef}
-                    onClick={handleSubmitAnswer}
+                    onClick={() => {
+                      console.log('GO button clicked!');
+                      handleSubmitAnswer();
+                    }}
                     disabled={!userAnswer.trim() || submitAnswerMutation.isPending || showFeedback}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 h-16 w-20 rounded-lg bg-emerald-600 hover:bg-emerald-700"
                   >
