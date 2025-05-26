@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { useGameState } from "@/hooks/useGameState";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { X, Flag, Map, Mic, Clock, Trophy, Target, Zap, Percent } from "lucide-react";
+import { X, Flag, Map, Mic, Clock, Trophy, Target, Zap, Percent, Bot, BookOpen } from "lucide-react";
 import { getRankTitle } from "@/lib/gameData";
 import type { Question } from "@shared/schema";
 import GameResults from "@/components/GameResults";
@@ -56,7 +56,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
           mode: modeToUse,
           region: regionToUse,
           difficulty: Math.floor(Math.random() * 3) + 2, // Difficulty 2-4
-          previousQuestions: generatedQuestions.map(q => q.question)
+          previousQuestions: generatedQuestions.map(q => q.questionText)
         });
         
         const aiQuestion = await response.json();
@@ -82,11 +82,22 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     }
   };
 
+  // Use AI questions if enabled, otherwise use static questions
+  const questionsToUse = useAIQuestions ? aiQuestions : (questions || []);
+  const currentQuestion = questionsToUse[currentQuestionIndex];
+
+  // Generate AI questions when toggle is switched on
+  useEffect(() => {
+    if (useAIQuestions && aiQuestions.length === 0) {
+      generateAIQuestions();
+    }
+  }, [useAIQuestions]);
+
   console.log('Game state:', gameState);
   console.log('Mode being used:', modeToUse);
   console.log('Region being used:', regionToUse);
   console.log('Use AI Questions:', useAIQuestions);
-  console.log('Questions data:', useAIQuestions ? aiQuestions : questions);
+  console.log('Questions data:', questionsToUse);
   console.log('Loading state:', isLoading || isGeneratingAI);
   console.log('Error:', error);
 
@@ -126,7 +137,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     setHasSubmitted(false);
   }, [currentQuestionIndex]);
 
-  const currentQuestion: Question | undefined = questions?.[currentQuestionIndex];
+  // Remove duplicate currentQuestion declaration - it's already defined above
 
   const handleSubmitAnswer = () => {
     console.log('handleSubmitAnswer called!');
@@ -138,7 +149,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     const alternativeAnswers = currentQuestion.alternativeAnswers || [];
     
     const isCorrect = userAnswerLower === correctAnswer || 
-                     alternativeAnswers.some(alt => alt.toLowerCase() === userAnswerLower);
+                     alternativeAnswers.some((alt: string) => alt.toLowerCase() === userAnswerLower);
 
     const answerResult = {
       isCorrect,
@@ -340,6 +351,29 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
                 <span className="text-sm font-medium text-slate-700">
                   Score: <span className="font-mono">{gameState.score}</span>
                 </span>
+              </div>
+
+              {/* AI Toggle */}
+              <div className="flex items-center space-x-2 bg-slate-100 rounded-lg p-2">
+                <Button
+                  variant={!useAIQuestions ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setUseAIQuestions(false)}
+                  className="text-xs"
+                >
+                  <BookOpen className="w-4 h-4 mr-1" />
+                  Static
+                </Button>
+                <Button
+                  variant={useAIQuestions ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setUseAIQuestions(true)}
+                  className="text-xs"
+                  disabled={isGeneratingAI}
+                >
+                  <Bot className="w-4 h-4 mr-1" />
+                  AI {isGeneratingAI ? "..." : ""}
+                </Button>
               </div>
 
               {/* Close Button */}
