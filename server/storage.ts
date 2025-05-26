@@ -333,6 +333,118 @@ export class MemStorage implements IStorage {
         difficulty: 4,
         visualType: "text"
       },
+      // Capital Cities - Europe
+      {
+        mode: "capitals",
+        region: "europe",
+        questionText: "What is the capital of Estonia?",
+        hint: "This medieval city is known for its well-preserved Old Town.",
+        answer: "tallinn",
+        alternativeAnswers: [],
+        funFact: "Tallinn's Old Town is a UNESCO World Heritage site and one of the best-preserved medieval cities in Europe.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "europe",
+        questionText: "What is the capital of Slovenia?",
+        hint: "This city is home to the famous Triple Bridge.",
+        answer: "ljubljana",
+        alternativeAnswers: [],
+        funFact: "Ljubljana was the European Capital of Culture in 2008 and is known for its green initiatives.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "europe",
+        questionText: "What is the capital of Croatia?",
+        hint: "This city is known for its red-tiled roofs and medieval Upper Town.",
+        answer: "zagreb",
+        alternativeAnswers: [],
+        funFact: "Zagreb's Upper Town (Gornji Grad) is connected to the Lower Town by the world's shortest funicular railway.",
+        difficulty: 2,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "europe",
+        questionText: "What is the capital of Latvia?",
+        hint: "This city is famous for its Art Nouveau architecture.",
+        answer: "riga",
+        alternativeAnswers: [],
+        funFact: "Riga has the largest collection of Art Nouveau buildings in the world, with over 800 buildings in this architectural style.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "capitals",
+        region: "europe",
+        questionText: "What is the capital of Lithuania?",
+        hint: "This city has one of the largest surviving medieval Old Towns in Northern Europe.",
+        answer: "vilnius",
+        alternativeAnswers: [],
+        funFact: "Vilnius was designated as a European Capital of Culture in 2009 and is known for its baroque architecture.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      // Hidden Outlines - Europe
+      {
+        mode: "hidden-outlines",
+        region: "europe",
+        questionText: "Which European country has this distinctive boot shape?",
+        hint: "This Mediterranean country is famous for pasta, pizza, and the Roman Empire.",
+        answer: "italy",
+        alternativeAnswers: [],
+        funFact: "Italy's distinctive boot shape is one of the most recognizable country outlines in the world. The 'boot' appears to be kicking the island of Sicily!",
+        difficulty: 1,
+        visualType: "outline"
+      },
+      {
+        mode: "hidden-outlines",
+        region: "europe",
+        questionText: "Which Nordic country has this distinctive elongated shape with many fjords?",
+        hint: "This Scandinavian country is famous for its dramatic coastline and northern lights.",
+        answer: "norway",
+        alternativeAnswers: [],
+        funFact: "Norway has the longest and most complex coastline in Europe, with over 25,000 km including all its fjords and islands.",
+        difficulty: 2,
+        visualType: "outline"
+      },
+      {
+        mode: "hidden-outlines",
+        region: "europe",
+        questionText: "Which European country has this distinctive shape with the Iberian Peninsula?",
+        hint: "This country shares the peninsula with Portugal and is famous for flamenco and paella.",
+        answer: "spain",
+        alternativeAnswers: [],
+        funFact: "Spain occupies most of the Iberian Peninsula and its outline is easily recognizable by the distinctive rectangular shape in southwestern Europe.",
+        difficulty: 2,
+        visualType: "outline"
+      },
+      {
+        mode: "hidden-outlines",
+        region: "europe",
+        questionText: "Which country has this distinctive hexagonal shape in Western Europe?",
+        hint: "This country is famous for the Eiffel Tower, wine, and cheese.",
+        answer: "france",
+        alternativeAnswers: [],
+        funFact: "France is often called 'L'Hexagone' because of its roughly six-sided shape. It's the largest country entirely within Europe.",
+        difficulty: 2,
+        visualType: "outline"
+      },
+      {
+        mode: "hidden-outlines",
+        region: "europe",
+        questionText: "Which Balkan country has this distinctive shape on the Adriatic Sea?",
+        hint: "This country has a very long, narrow coastline and looks like a boomerang.",
+        answer: "croatia",
+        alternativeAnswers: [],
+        funFact: "Croatia has one of the most distinctive shapes in Europe, with its long, curved coastline along the Adriatic Sea resembling a boomerang or crescent.",
+        difficulty: 3,
+        visualType: "outline"
+      },
       // Mispronounced Capitals (10 questions)
       {
         mode: "mispronounced-capitals",
@@ -442,6 +554,130 @@ export class MemStorage implements IStorage {
         alternativeAnswers: ["sri jayawardenepura kotte", "jayawardenepura"],
         funFact: "The full name is one of the longest capital city names in the world! Most locals just call it Kotte.",
         difficulty: 4,
+        visualType: "text"
+      },
+      // Flag Quirks - Europe
+      {
+        mode: "flag-quirks",
+        region: "europe",
+        questionText: "Which European country's flag is identical to Chad's flag?",
+        hint: "This Eastern European nation has the exact same blue, yellow, and red vertical stripes.",
+        answer: "romania",
+        alternativeAnswers: [],
+        funFact: "Romania and Chad have nearly identical flags, both featuring blue, yellow, and red vertical stripes. Chad adopted its flag in 1959, while Romania has used this design since 1989.",
+        difficulty: 4,
+        visualType: "flag"
+      },
+      {
+        mode: "flag-quirks",
+        region: "europe",
+        questionText: "Which European country has a flag with a cross that extends to the edges?",
+        hint: "This Nordic country's flag is red with a white cross.",
+        answer: "denmark",
+        alternativeAnswers: [],
+        funFact: "Denmark's flag, called the Dannebrog, is considered the oldest continuously used national flag in the world, dating back to 1219.",
+        difficulty: 2,
+        visualType: "flag"
+      },
+      {
+        mode: "flag-quirks",
+        region: "europe",
+        questionText: "Which European country's flag features a double-headed eagle?",
+        hint: "This Balkan country's flag shows a black double-headed eagle on a red field.",
+        answer: "albania",
+        alternativeAnswers: [],
+        funFact: "Albania's double-headed eagle represents the strength and independence of the Albanian people and has been a symbol since the 15th century.",
+        difficulty: 3,
+        visualType: "flag"
+      },
+      {
+        mode: "flag-quirks",
+        region: "europe",
+        questionText: "Which European country has three horizontal stripes with a coat of arms?",
+        hint: "This Iberian country's flag has red-yellow-red stripes with a complex coat of arms.",
+        answer: "spain",
+        alternativeAnswers: [],
+        funFact: "Spain's coat of arms features the Pillars of Hercules with the motto 'Plus Ultra' (Further Beyond), representing Spain's exploration beyond the Mediterranean.",
+        difficulty: 2,
+        visualType: "flag"
+      },
+      {
+        mode: "flag-quirks",
+        region: "europe",
+        questionText: "Which European country's flag is a simple tricolor without any symbols?",
+        hint: "This country's flag has blue, white, and red vertical stripes and inspired many other flags.",
+        answer: "france",
+        alternativeAnswers: [],
+        funFact: "France's tricolor flag became the template for many other countries' flags and represents liberty, equality, and fraternity.",
+        difficulty: 1,
+        visualType: "flag"
+      },
+      // Multiple Capitals - Europe
+      {
+        mode: "multiple-capitals",
+        region: "europe",
+        questionText: "Which European country has both Amsterdam as its constitutional capital and The Hague as its seat of government?",
+        hint: "This country is famous for its tulips, windmills, and cycling culture.",
+        answer: "netherlands",
+        alternativeAnswers: ["holland"],
+        funFact: "The Netherlands has Amsterdam as its official capital, but The Hague houses the government, supreme court, and royal residence, making it the de facto capital.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "multiple-capitals",
+        region: "europe",
+        questionText: "Which European country considers both Podgorica and Cetinje as capitals?",
+        hint: "This small Balkan country on the Adriatic Sea has two capitals for different functions.",
+        answer: "montenegro",
+        alternativeAnswers: [],
+        funFact: "Montenegro has Podgorica as its administrative capital and Cetinje as its historical and cultural capital, where the president's residence is located.",
+        difficulty: 4,
+        visualType: "text"
+      },
+      {
+        mode: "multiple-capitals",
+        region: "europe",
+        questionText: "Which European microstate is completely surrounded by Rome?",
+        hint: "This tiny country is the spiritual center of the Catholic Church.",
+        answer: "vatican city",
+        alternativeAnswers: ["vatican"],
+        funFact: "Vatican City is the smallest country in the world at just 0.17 square miles. It's entirely enclosed by Rome and serves as the spiritual capital of over 1 billion Catholics.",
+        difficulty: 2,
+        visualType: "text"
+      },
+      // Mystery Mix - Europe  
+      {
+        mode: "mystery-mix",
+        region: "europe",
+        questionText: "Which European country has never been conquered in its modern history?",
+        hint: "This mountainous nation is famous for its neutrality, banking, and chocolate.",
+        answer: "switzerland",
+        alternativeAnswers: [],
+        funFact: "Switzerland has never been successfully invaded or conquered in its modern history. Its mountainous terrain and strong military traditions have helped maintain its independence.",
+        difficulty: 3,
+        visualType: "text"
+      },
+      {
+        mode: "mystery-mix",
+        region: "europe",
+        questionText: "Which European country is located on two continents?",
+        hint: "This country bridges Europe and Asia, with its largest city split between both continents.",
+        answer: "turkey",
+        alternativeAnswers: [],
+        funFact: "Turkey is the only country that spans two continents - Europe and Asia. Istanbul, its largest city, is literally split between both continents by the Bosphorus strait!",
+        difficulty: 2,
+        visualType: "text"
+      },
+      {
+        mode: "mystery-mix",
+        region: "europe",
+        questionText: "Which European country has the most UNESCO World Heritage Sites?",
+        hint: "This Mediterranean country is famous for art, history, and amazing cuisine.",
+        answer: "italy",
+        alternativeAnswers: [],
+        funFact: "Italy has 58 UNESCO World Heritage Sites, more than any other country. From the Colosseum to Venice, Italy is a treasure trove of cultural heritage!",
+        difficulty: 3,
         visualType: "text"
       },
       // Flag Quirks (10 questions)
