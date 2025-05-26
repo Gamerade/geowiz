@@ -83,7 +83,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
   };
 
   // Use AI questions if enabled, otherwise use static questions
-  const questionsToUse = useAIQuestions ? aiQuestions : (questions || []);
+  const questionsToUse = useAIQuestions ? aiQuestions : (questions as Question[] || []);
   const currentQuestion = questionsToUse[currentQuestionIndex];
 
   // Generate AI questions when toggle is switched on
@@ -200,7 +200,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     // Always increment question when continuing
     incrementQuestion();
     
-    if (currentQuestionIndex >= (questions?.length || 0) - 1) {
+    if (currentQuestionIndex >= questionsToUse.length - 1) {
       // Game complete - show results screen
       completeGame();
       setShowResults(true);
@@ -275,7 +275,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     );
   }
 
-  if (error || !questions || questions.length === 0) {
+  if (error || (!useAIQuestions && (!questions || (questions as Question[]).length === 0))) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-center">
@@ -295,8 +295,8 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
         correctAnswers={gameState.correctAnswers}
         currentStreak={gameState.currentStreak}
         maxStreak={gameState.maxStreak}
-        gameMode="mispronounced-capitals"
-        region="global"
+        gameMode={selectedMode || "capital-cities"}
+        region={selectedRegion || "global"}
         onPlayAgain={handlePlayAgain}
         onBackToMenu={handleBackToMenu}
       />
@@ -307,7 +307,9 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-center">
-          <p className="text-lg text-slate-600 mb-4">No more questions available.</p>
+          <p className="text-lg text-slate-600 mb-4">
+            {useAIQuestions ? "Generating AI questions..." : "No more questions available."}
+          </p>
           <Button onClick={onBackToMenu}>Back to Menu</Button>
         </div>
       </div>
@@ -328,11 +330,11 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
                   <span className="text-sm font-medium text-slate-700">Progress</span>
                   <div className="flex items-center space-x-2">
                     <Progress 
-                      value={(currentQuestionIndex / (questions?.length || 1)) * 100} 
+                      value={(currentQuestionIndex / (questionsToUse.length || 1)) * 100} 
                       className="w-24 h-2"
                     />
                     <span className="text-xs text-slate-500 font-mono">
-                      {currentQuestionIndex + 1}/{questions?.length || 0}
+                      {currentQuestionIndex + 1}/{questionsToUse.length || 0}
                     </span>
                   </div>
                 </div>
