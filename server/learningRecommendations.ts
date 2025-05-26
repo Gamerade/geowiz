@@ -236,23 +236,63 @@ export class LearningPathEngine {
     return [
       {
         id: "start-capitals",
-        title: "Start with Capital Cities",
-        description: "Begin your geography journey with the fundamentals - world capitals",
+        title: "Master World Capitals",
+        description: "Build your foundation with capital cities - the cornerstone of geography knowledge",
         priority: "high",
         suggestedMode: "capitals",
         suggestedRegion: "global",
-        reasoning: "Perfect starting point for building geographical knowledge foundation.",
+        reasoning: "Capital cities are the perfect starting point. Learn country-capital relationships that form the basis of all geographic knowledge.",
         type: "skill_building"
       },
       {
-        id: "explore-region",
-        title: "Focus on One Region",
-        description: "Try Europe for a manageable challenge with familiar countries",
-        priority: "medium",
+        id: "explore-europe",
+        title: "Explore European Geography",
+        description: "Start with Europe - familiar names, manageable size, rich history",
+        priority: "high",
         suggestedMode: "capitals",
         suggestedRegion: "europe",
-        reasoning: "Regional focus helps build confidence before tackling global challenges.",
+        reasoning: "Europe offers a perfect balance of challenge and familiarity, with countries you've likely heard of before.",
         type: "new_region"
+      },
+      {
+        id: "try-asia",
+        title: "Challenge Yourself with Asia",
+        description: "Ready for something different? Test your knowledge of Asian capitals and cultures",
+        priority: "medium",
+        suggestedMode: "capitals",
+        suggestedRegion: "asia",
+        reasoning: "Asia provides an excellent challenge with diverse countries and fascinating capital cities.",
+        type: "new_region"
+      },
+      {
+        id: "flag-basics",
+        title: "Learn Flag Patterns",
+        description: "Discover the stories behind country flags and their unique quirks",
+        priority: "medium",
+        suggestedMode: "flag-quirks",
+        suggestedRegion: "global",
+        reasoning: "Flags are visual and memorable - a fun way to connect countries with their symbols and history.",
+        type: "skill_building"
+      },
+      {
+        id: "americas-focus",
+        title: "Discover the Americas",
+        description: "From Canada to Chile - explore North and South American geography",
+        priority: "medium",
+        suggestedMode: "capitals",
+        suggestedRegion: "north-america",
+        reasoning: "The Americas offer diverse geography and interesting capital cities to learn.",
+        type: "new_region"
+      },
+      {
+        id: "pronunciation-fun",
+        title: "Pronunciation Challenge",
+        description: "Think you know how to say those tricky capital names? Test yourself!",
+        priority: "low",
+        suggestedMode: "mispronounced-capitals",
+        suggestedRegion: "global",
+        reasoning: "Once you know the capitals, challenge yourself with correct pronunciation - it's trickier than you think!",
+        type: "skill_building"
       }
     ];
   }
