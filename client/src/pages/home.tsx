@@ -6,6 +6,7 @@ import GameModeSelector from "@/components/GameModeSelector";
 import RegionSelector from "@/components/RegionSelector";
 import GameInterface from "@/components/GameInterface";
 import FeedbackModal from "@/components/FeedbackModal";
+import LearningPath from "@/components/LearningPath";
 import { useGameState } from "@/hooks/useGameState";
 import { Trophy, Star, Globe, MapPin, Flag, Clock, Flame, Crown } from "lucide-react";
 
@@ -33,6 +34,14 @@ export default function Home() {
   const handleBackToMenu = () => {
     setCurrentSection('welcome');
     resetGame();
+  };
+
+  const handleRecommendationClick = (mode: string, region: string) => {
+    console.log('Recommendation clicked:', mode, region);
+    setSelectedMode(mode as any);
+    setSelectedRegion(region as any);
+    setCurrentSection('game');
+    startGame();
   };
 
   const getRankTitle = (score: number) => {
@@ -139,6 +148,13 @@ export default function Home() {
                 </Card>
               </div>
             </div>
+          </section>
+        )}
+
+        {/* Learning Path Section */}
+        {currentSection === 'welcome' && (
+          <section className="py-8">
+            <LearningPath onRecommendationClick={handleRecommendationClick} />
           </section>
         )}
 

@@ -224,6 +224,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ status: "ok", timestamp: new Date().toISOString() });
   });
 
+  // Learning Recommendations endpoints
+  app.get("/api/learning/insights", async (req, res) => {
+    try {
+      // For demo purposes, using a mock user ID since auth isn't fully connected
+      const userId = "demo-user";
+      const insights = await learningEngine.analyzeUserPerformance(userId);
+      res.json(insights);
+    } catch (error) {
+      console.error("Failed to generate learning insights:", error);
+      res.status(500).json({ message: "Failed to generate learning insights" });
+    }
+  });
+
+  app.get("/api/learning/recommendations", async (req, res) => {
+    try {
+      // For demo purposes, using a mock user ID since auth isn't fully connected
+      const userId = "demo-user";
+      const recommendations = await learningEngine.generateRecommendations(userId);
+      res.json(recommendations);
+    } catch (error) {
+      console.error("Failed to generate recommendations:", error);
+      res.status(500).json({ message: "Failed to generate recommendations" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
