@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertGameSessionSchema, insertGameAnswerSchema, type GameMode, type Region } from "@shared/schema";
 import { z } from "zod";
+import { generateQuestion, generateCommentary } from "./openai";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -174,6 +175,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(achievements);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch achievements" });
+    }
+  });
+
+  // Generate AI question
+  app.post("/api/ai/generate-question", async (req, res) => {
+    try {
+      const { mode, region, difficulty, previousQuestions } = req.body;
+      
+      const aiQuestion = await generateQuestion({
+        mode,
+        region,
+        difficulty: difficulty || 3,
+        previousQuestions
+      });
+
+      res.json(aiQuestion);
+    } catch (error) {
+      console.error("Error generating AI question:", error);
+      res.status(500).json({ message: "Failed to generate AI question" });
+    }
+  });
+
+  // Generate AI commentary
+  app.post("/api/ai/generate-commentary", async (req, res) => {
+    try {
+      const { userAnswer, correctAnswer, isCorrect, questionText, country, mode } = req.body;
+      
+      const commentary = await generateCommentary({
+        userAnswer,
+        correctAnswer,
+        isCorrect,
+        questionText,
+        country,
+        mode
+      });
+
+      res.json(commentary);
+    } catch (error) {
+      console.error("Error generating AI commentary:", error);
+      res.status(500).json({ message: "Failed to generate AI commentary" });
     }
   });
 

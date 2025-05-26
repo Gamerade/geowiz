@@ -29,6 +29,9 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
+  const [useAIQuestions, setUseAIQuestions] = useState(false);
+  const [aiQuestions, setAiQuestions] = useState<any[]>([]);
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
   const isInFeedbackMode = useRef(false);
   const goButtonRef = useRef<HTMLButtonElement>(null);
 
