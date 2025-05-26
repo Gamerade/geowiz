@@ -108,7 +108,7 @@ export const regions: RegionInfo[] = [
     name: "Global Challenge",
     description: "All countries worldwide",
     countryCount: 195,
-    image: "https://pixabay.com/get/gd15d1f81fc9b2adede49e7b332bf8d65faf9a3862e1b407fb857272fb6b3a66bd1af764daeae9bca035451a206188aedb48fe5623194e0625104267ca960bd28_1280.jpg",
+    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjMzMzRkY4Ii8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjEyNSIgcj0iMTAwIiBmaWxsPSIjNjY3MEZGIiBmaWxsLW9wYWNpdHk9IjAuMyIvPgo8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxMjUiIHI9IjcwIiBmaWxsPSIjNjY3MEZGIiBmaWxsLW9wYWNpdHk9IjAuNSIvPgo8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxMjUiIHI9IjQwIiBmaWxsPSIjNjY3MEZGIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTM1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSJib2xkIj5HTE9CQUw8L3RleHQ+Cjwvc3ZnPgo=",
     badge: "Ultimate",
     badgeColor: "bg-primary text-white"
   },
@@ -135,7 +135,7 @@ export const regions: RegionInfo[] = [
     name: "Africa",
     description: "Diverse nations and cultures", 
     countryCount: 54,
-    image: "https://pixabay.com/get/g6ef4d7bd1fc03120234d240b4aa277175dad9091427d70a204d088ae22fdfbafd25af083f5917de6aab43715ca8e37c1_1280.jpg",
+    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjMTZBMzRBIi8+CjxwYXRoIGQ9Ik0xODAsMzBDMjEwLDQwIDI0MCw3MCAyNTAsOTBDMjU1LDEyMCAyNTAsMTUwIDI0MCwxODBDMjMwLDIwMCAyMDAsMjEwIDE3MCwyMDBDMTQwLDE5MCAxMjAsMTcwIDExMCwxNDVDMTA1LDEyMCAxMTAsMTAwIDEzMCw4MEMxNTAsNjAgMTcwLDQwIDE4MCwzMFoiIGZpbGw9IiMyMkM1NUIiLz4KPHA+dGggZD0iTTE5MCw2MEMyMTUsNjUgMjMwLDgwIDIzNSwxMDBDMjM4LDEyMCAyMzUsMTQwIDIyNSwxNjBDMjEwLDE3NSAxODUsMTgwIDE2MCwxNzBDMTQwLDE2MCAxMjUsMTQ1IDEyNSwxMjVDMTI1LDEwNSAxNDAsMTAwIDE2MCw4NUMxNzUsNzUgMTg1LDY1IDE5MCw2MFoiIGZpbGw9IiMxNkE5NEEiLz4KPHA+dGV4dCB4PSIyMDAiIHk9IjE0NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iYm9sZCI+QUZSSUNBPC90ZXh0Pgo8L3N2Zz4K",
     badge: "Diverse",
     badgeColor: "bg-green-500 text-white"
   },
