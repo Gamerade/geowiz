@@ -526,11 +526,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
               {/* Result Header */}
               <div className="space-y-3">
                 {lastAnswer?.isCorrect ? (
-                  <div className={`transition-all duration-1000 rounded-xl p-6 ${
-                    correctAnswerAnimation 
-                      ? 'bg-green-200 border-green-400 shadow-green-300 shadow-2xl scale-110 opacity-70' 
-                      : 'bg-green-100 border-green-200 shadow-green-100 shadow-lg'
-                  }`}>
+                  <div>
                     <div className="text-6xl mb-3">🎉</div>
                     <h2 className="text-3xl font-bold text-emerald-500">Excellent!</h2>
                     <p className="text-lg text-slate-700 mt-1">
@@ -583,7 +579,11 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
 
       {/* Quick Stats */}
       <div className="grid md:grid-cols-4 gap-4">
-        <Card>
+        <Card className={`transition-all duration-1000 ${
+          correctAnswerAnimation 
+            ? 'bg-green-200 border-green-400 shadow-green-300 shadow-2xl scale-110 opacity-70' 
+            : ''
+        }`}>
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-emerald-600">{gameState.correctAnswers}</div>
             <div className="text-sm text-slate-600">Correct</div>
