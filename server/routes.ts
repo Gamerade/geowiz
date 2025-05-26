@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { insertGameSessionSchema, insertGameAnswerSchema, type GameMode, type Region } from "@shared/schema";
 import { z } from "zod";
 import { generateQuestion, generateCommentary } from "./openai";
+import { learningEngine } from "./learningRecommendations";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   

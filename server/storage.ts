@@ -4,6 +4,8 @@ import {
   gameSessions,
   gameAnswers,
   achievements,
+  learningProgress,
+  learningRecommendations,
   type User,
   type UpsertUser,
   type Question,
@@ -14,6 +16,10 @@ import {
   type InsertGameAnswer,
   type Achievement,
   type InsertAchievement,
+  type LearningProgress,
+  type InsertLearningProgress,
+  type LearningRecommendation,
+  type InsertLearningRecommendation,
   type GameMode,
   type Region
 } from "@shared/schema";

@@ -132,3 +132,45 @@ export const Regions = [
 
 export type GameMode = typeof GameModes[number];
 export type Region = typeof Regions[number];
+
+// Learning Path and Recommendations Schema
+export const learningProgress = pgTable("learning_progress", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  mode: varchar("mode").notNull(),
+  region: varchar("region").notNull(),
+  totalQuestions: integer("total_questions").default(0),
+  correctAnswers: integer("correct_answers").default(0),
+  averageTime: integer("average_time").default(0), // in seconds
+  longestStreak: integer("longest_streak").default(0),
+  weakTopics: json("weak_topics").default([]), // Array of topic areas where user struggles
+  strongTopics: json("strong_topics").default([]), // Array of topic areas where user excels
+  lastPlayed: timestamp("last_played").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow()
+});
+
+export const learningRecommendations = pgTable("learning_recommendations", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  recommendationType: varchar("recommendation_type").notNull(), // "focus_area", "difficulty_adjustment", "new_region", "skill_building"
+  title: varchar("title").notNull(),
+  description: text("description").notNull(),
+  suggestedMode: varchar("suggested_mode"),
+  suggestedRegion: varchar("suggested_region"),
+  priority: integer("priority").default(1), // 1-5, higher is more important
+  reasoning: text("reasoning"), // Why this recommendation was made
+  isCompleted: boolean("is_completed").default(false),
+  createdAt: timestamp("created_at").defaultNow()
+});
+
+// Insert schemas for learning system
+export const insertLearningProgressSchema = createInsertSchema(learningProgress);
+export const insertLearningRecommendationSchema = createInsertSchema(learningRecommendations);
+
+// Types for learning system
+export type LearningProgress = typeof learningProgress.$inferSelect;
+export type InsertLearningProgress = z.infer<typeof insertLearningProgressSchema>;
+
+export type LearningRecommendation = typeof learningRecommendations.$inferSelect;
+export type InsertLearningRecommendation = z.infer<typeof insertLearningRecommendationSchema>;
