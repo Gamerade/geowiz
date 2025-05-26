@@ -412,11 +412,7 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
       {/* Main Game Content - Question or Feedback */}
       {!showFeedback ? (
         /* Question Card */
-        <Card className={`mb-6 transition-all duration-1000 ${
-          correctAnswerAnimation 
-            ? 'bg-green-100 border-green-300 shadow-green-200 shadow-xl scale-105' 
-            : ''
-        }`}>
+        <Card className="mb-6">
           <CardContent className="p-8">
             <div className="max-w-4xl mx-auto">
               {/* Question Type Badge */}
@@ -530,7 +526,11 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
               {/* Result Header */}
               <div className="space-y-3">
                 {lastAnswer?.isCorrect ? (
-                  <div>
+                  <div className={`transition-all duration-1000 rounded-xl p-6 ${
+                    correctAnswerAnimation 
+                      ? 'bg-green-200 border-green-400 shadow-green-300 shadow-2xl scale-110 opacity-70' 
+                      : 'bg-green-100 border-green-200 shadow-green-100 shadow-lg'
+                  }`}>
                     <div className="text-6xl mb-3">🎉</div>
                     <h2 className="text-3xl font-bold text-emerald-500">Excellent!</h2>
                     <p className="text-lg text-slate-700 mt-1">
