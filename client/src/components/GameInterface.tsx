@@ -44,11 +44,50 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     enabled: true
   });
 
+  // Generate AI questions when AI mode is enabled
+  const generateAIQuestions = async () => {
+    if (!useAIQuestions) return;
+    
+    setIsGeneratingAI(true);
+    try {
+      const generatedQuestions = [];
+      for (let i = 0; i < 10; i++) {
+        const response = await apiRequest("POST", "/api/ai/generate-question", {
+          mode: modeToUse,
+          region: regionToUse,
+          difficulty: Math.floor(Math.random() * 3) + 2, // Difficulty 2-4
+          previousQuestions: generatedQuestions.map(q => q.question)
+        });
+        
+        const aiQuestion = await response.json();
+        generatedQuestions.push({
+          id: 1000 + i, // Unique ID for AI questions
+          mode: modeToUse,
+          region: regionToUse,
+          questionText: aiQuestion.question,
+          hint: aiQuestion.hint,
+          answer: aiQuestion.answer,
+          alternativeAnswers: aiQuestion.alternativeAnswers || [],
+          funFact: aiQuestion.funFact,
+          difficulty: aiQuestion.difficulty,
+          visualType: "text",
+          visualUrl: null
+        });
+      }
+      setAiQuestions(generatedQuestions);
+    } catch (error) {
+      console.error("Failed to generate AI questions:", error);
+    } finally {
+      setIsGeneratingAI(false);
+    }
+  };
+
   console.log('Game state:', gameState);
   console.log('Mode being used:', modeToUse);
   console.log('Region being used:', regionToUse);
-  console.log('Questions data:', questions);
-  console.log('Loading state:', isLoading);
+  console.log('Use AI Questions:', useAIQuestions);
+  console.log('Questions data:', useAIQuestions ? aiQuestions : questions);
+  console.log('Loading state:', isLoading || isGeneratingAI);
   console.log('Error:', error);
 
   // Submit answer mutation
