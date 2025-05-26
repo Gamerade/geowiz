@@ -213,18 +213,25 @@ export default function GameInterface({ onBackToMenu, selectedMode, selectedRegi
     }
   };
 
-  // Global Enter key handler for feedback screen
+  // Global Enter key handler for both submitting answers and continuing
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && showFeedback && lastAnswer) {
+      if (e.key === 'Enter') {
         e.preventDefault();
-        handleContinue();
+        
+        if (showFeedback && lastAnswer) {
+          // After feedback is shown, Enter continues to next question
+          handleContinue();
+        } else if (!showFeedback && userAnswer.trim()) {
+          // During question, Enter submits the answer (same as GO button)
+          handleSubmitAnswer();
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [showFeedback, lastAnswer]);
+  }, [showFeedback, lastAnswer, userAnswer]);
 
   const handleSkipQuestion = () => {
     handleSubmitAnswer(); // Submit empty answer
