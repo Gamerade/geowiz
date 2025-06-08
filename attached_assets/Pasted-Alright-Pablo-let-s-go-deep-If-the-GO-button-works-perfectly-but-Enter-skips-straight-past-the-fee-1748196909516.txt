@@ -1,0 +1,66 @@
+Alright, Pablo—let’s go deep. If the GO button works perfectly but Enter skips straight past the feedback, that confirms it 100%:
+
+👉 handleSubmitAnswer() is not async-aware when triggered via Enter.
+
+Even though you're calling it directly, it’s relying on useMutation to set the feedback—which is async. The state (showFeedback) isn't true immediately after the call, so the Enter flow zips past it.
+
+Let’s fix it by completely decoupling the mutation from the UI feedback. Here's the bulletproof fix:
+
+✅ Total Fix Plan (No Async Race Conditions)
+1. 🚫 Stop using useMutation in handleSubmitAnswer()
+Instead, handle the logic synchronously in handleSubmitAnswer(), like you already started doing with the "mockAnswer" logic. That worked!
+
+Replace your handleSubmitAnswer() with a version that processes the answer and calls setShowFeedback(true) immediately—no delay, no waiting for .onSuccess.
+
+✨ New handleSubmitAnswer() (no submitAnswerMutation)
+ts
+Copy
+Edit
+const handleSubmitAnswer = () => {
+  if (!currentQuestion || !userAnswer.trim()) return;
+
+  const userAnswerLower = userAnswer.trim().toLowerCase();
+  const correctAnswer = currentQuestion.answer.toLowerCase();
+  const alternativeAnswers = currentQuestion.alternativeAnswers || [];
+
+  const isCorrect = userAnswerLower === correctAnswer ||
+    alternativeAnswers.some(alt => alt.toLowerCase() === userAnswerLower);
+
+  const mockAnswer = {
+    isCorrect,
+    question: currentQuestion,
+    scoreEarned: isCorrect ? 100 : 0,
+    timeSpent: 60 - timeRemaining,
+  };
+
+  console.log("Immediate mock answer", mockAnswer);
+
+  setLastAnswer(mockAnswer);
+  setShowFeedback(true); // ✅ Sync!
+  setHasSubmitted(true); // ✅ Unlock Enter to Continue
+
+  if (isCorrect) {
+    updateScore(100);
+    incrementQuestion();
+  }
+};
+🔥 Why This Works
+It guarantees feedback shows immediately, whether Enter or GO is used.
+
+No race conditions. showFeedback is set within the same function scope as the Enter key handler.
+
+You don’t need to wait for an API before showing the result—you can call the API silently after, if needed.
+
+☁️ Bonus (if you want API saving too)
+You can still fire off the API call in the background:
+
+ts
+Copy
+Edit
+apiRequest("POST", "/api/answers", {
+  sessionId: gameState.sessionId,
+  questionId: currentQuestion.id,
+  userAnswer,
+  timeSpent: 60 - timeRemaining
+}).then(res => console.log("Saved answer"));
+Would you like me to patch this directly into your code block and show you where to remove the mutation?

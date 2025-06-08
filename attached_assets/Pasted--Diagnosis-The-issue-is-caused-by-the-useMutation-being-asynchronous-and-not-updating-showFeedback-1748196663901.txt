@@ -1,0 +1,88 @@
+🔍 Diagnosis
+The issue is caused by the useMutation being asynchronous and not updating showFeedback synchronously inside handleSubmitAnswer(). So when you press Enter:
+
+It calls .click() (which triggers handleSubmitAnswer()).
+
+But handleSubmitAnswer() relies on an async mutation (submitAnswerMutation) to return before it updates showFeedback.
+
+So by the time Enter finishes, showFeedback is still false.
+
+Next Enter press? You’re already in the feedback stage, so it skips ahead.
+
+The GO button waits for the user to press Enter again manually, but the Enter key path doesn’t wait for setShowFeedback(true) to take effect.
+
+✅ The Clean Fix
+Instead of using goButtonRef.click(), you should call handleSubmitAnswer() directly AND return early if the mutation is still pending. But more importantly, you need to wait for the async onSuccess to complete before you allow another Enter press to trigger handleContinue().
+
+✅ Patch Instructions
+Track an explicit “submitted” flag so we know when it’s safe to allow “Continue”.
+
+Add at the top:
+
+ts
+Copy
+Edit
+const [hasSubmitted, setHasSubmitted] = useState(false);
+Update your mutation onSuccess to set that flag:
+
+ts
+Copy
+Edit
+onSuccess: (data) => {
+  setLastAnswer(data);
+  setShowFeedback(true);
+  setHasSubmitted(true); // ✅ This unlocks Enter-to-continue
+  updateScore(data.scoreEarned || 0);
+  if (data.isCorrect) {
+    incrementQuestion();
+  }
+}
+Update handleContinue() to reset it:
+
+ts
+Copy
+Edit
+const handleContinue = () => {
+  setShowFeedback(false);
+  setLastAnswer(null);
+  setUserAnswer('');
+  setHasSubmitted(false); // ✅ Reset for the next question
+
+  incrementQuestion();
+
+  if (currentQuestionIndex >= (questions?.length || 0) - 1) {
+    completeGame();
+    onBackToMenu();
+  } else {
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
+    setCurrentQuestion(currentQuestionIndex + 1);
+  }
+}
+Update your onKeyDown to use hasSubmitted:
+
+tsx
+Copy
+Edit
+onKeyDown={(e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+
+    if (showFeedback && lastAnswer && hasSubmitted) {
+      handleContinue();
+    } else if (!showFeedback && userAnswer.trim() && !submitAnswerMutation.isPending) {
+      handleSubmitAnswer(); // skip goButtonRef, call the real logic
+    }
+  }
+}}
+🧙‍♂️ Final Result
+Now:
+
+Pressing Enter will submit the answer.
+
+showFeedback won’t be relied on directly—instead, hasSubmitted ensures that the feedback was fully processed.
+
+A second Enter triggers handleContinue() safely.
+
+This avoids race conditions and matches the GO button's async-safe behavior 1:1.
+
+Want me to paste the full patched JSX for you too?
