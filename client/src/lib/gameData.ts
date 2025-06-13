@@ -1,4 +1,4 @@
-import type { GameMode, Region } from "@shared/schema";
+import type { GameMode, Region, Question } from "@shared/schema";
 
 export interface GameModeInfo {
   id: GameMode;
@@ -180,6 +180,27 @@ export function getRankTitle(score: number): string {
   if (score >= 500) return "Map Navigator";
   if (score >= 200) return "Compass Cadet";
   return "Geography Novice";
+}
+
+/**
+ * Store an array of questions in localStorage under the "questions" key.
+ * Overwrites any existing questions.
+ */
+export function storeQuestions(questions: Question[]): void {
+  localStorage.setItem("questions", JSON.stringify(questions));
+}
+
+/**
+ * Retrieve questions from localStorage, or null if not present.
+ */
+export function getStoredQuestions(): Question[] | null {
+  const data = localStorage.getItem("questions");
+  if (!data) return null;
+  try {
+    return JSON.parse(data) as Question[];
+  } catch {
+    return null;
+  }
 }
 
 export const triviaFacts = [
